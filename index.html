@@ -1033,13 +1033,15 @@ body:not(.adv) #ladCard{display:none!important}
   </div>
   <div class="tcard">
     <h2 id="qModeH">2. How did they give the price?</h2>
-    <div class="qFF" data-qff="price"></div>
+    <p class="small muted" style="margin:0 0 8px">Just pick how they said it, then type the number.</p>
         <div class="qSeg" id="qMode" role="group" aria-label="How the price was given">
       <button type="button" data-q="ship" aria-pressed="false">A price per ship<span class="u">"$28 million a ship"</span></button>
       <button type="button" data-q="shipT" aria-pressed="false">Per ship, technology included<span class="u">"$38 million a ship with the tech package"</span></button>
-      <button type="button" data-q="pct" aria-pressed="false">A discount<span class="u">"30% off list"</span></button>
+      <button type="button" data-q="pct" aria-pressed="false">A discount, %<span class="u">"30% off list"</span></button>
+      <button type="button" data-q="off" aria-pressed="false">Money off each ship<span class="u">"$10 million off the list price"</span></button>
       <button type="button" data-q="total" aria-pressed="false">One total for all ships<span class="u">"$436 million for the fleet", "contract value", "package price"</span></button>
     </div>
+    <p class="qAsk" id="qInAsk" hidden>Ask: "Thank you. Does that include technology, maintenance or training?" If yes, choose One total or Per ship with technology instead.</p>
     <div class="qField" id="qNumBox" hidden><label for="qNum" id="qNumL">The number</label><input id="qNum" type="text" inputmode="decimal" autocomplete="off" placeholder="Number only"></div>
     <div id="qTotBox" hidden>
       <p class="qAsk">Ask: "Thank you. What does that total include?"</p>
@@ -1050,6 +1052,7 @@ body:not(.adv) #ladCard{display:none!important}
     <div class="qLate" id="qMIn" hidden><label for="qM2" class="lab">Maintenance price inside the number, $ million a year per ship (same as step 3)</label><span class="small muted" style="display:block;margin-bottom:4px">Third-party baseline: 0.60 means $600,000. Not sure? Ask: "What is the yearly maintenance price per ship in that?"</span><input id="qM2" type="text" inputmode="decimal" style="font:inherit;padding:8px 10px;min-height:46px;border:2px solid var(--line);border-radius:8px;background:var(--panel);color:var(--fg);max-width:300px;width:100%"></div>
     <div class="qLate" id="qTIn" hidden><label for="qT2" class="lab">Training price inside the number, $ million a year per ship (same as step 3)</label><span class="small muted" style="display:block;margin-bottom:4px">Third-party baseline: 0.30 means $300,000. Not sure? Ask: "What is the yearly training price per ship in that?"</span><input id="qT2" type="text" inputmode="decimal" style="font:inherit;padding:8px 10px;min-height:46px;border:2px solid var(--line);border-radius:8px;background:var(--panel);color:var(--fg);max-width:300px;width:100%"></div>
     <p class="qOut" id="qOut">Choose how the price was given, then type the number.</p>
+    <details style="margin-top:10px"><summary style="cursor:pointer;font-weight:700;font-size:.9rem;min-height:40px;padding:8px 0">Price agreed by both sides? Open only then</summary><div class="qFF" data-qff="price"></div></details>
   </div>
   <div class="tcard">
     <details class="qS3" id="qS3" open><summary><span class="qS3h">3. What is in the deal</span><span class="qS3s" id="qS3s"></span><span class="qS3c" id="qS3c">Change</span></summary>
@@ -1345,7 +1348,7 @@ function deal(r){const gmFuel=(r.bub&&S.gmFuel==='same')?r.fuelSaving:0,gm=(r.bu
  const target=(r.list*(1-T.tlo/100)+r.tech)*r.c+sv-r.fuelT+r.extra,stretch=(r.list*(1-T.stretch/100)+r.tech)*r.c+sv-r.fuelT+r.extra;
  const max=(walk-r.svc-r.extra+r.fuelT+r.ag)/r.c-r.tech;
  return{walk,target,stretch,max,gm,gmFuel,zone:r.total>walk?'walk':r.total<=stretch?'stretch':r.total<=target?'target':'accept'}}
-const ZONE={stretch:'Excellent',target:'Target met',accept:'Acceptable',walk:'Walk away'};
+const ZONE={stretch:'Excellent',target:'Target met',accept:'Acceptable',walk:'Below walk-away'};
 function evaluate(r){const a={},c=[];const add=(go,l,msg)=>c.push({go,l,msg});
  /* hull */
  const gap=r.price*(1-31.5/40),extraY=gap/20,bill=extraY/.05;
@@ -1397,7 +1400,7 @@ function drawWins(r){
   (w.id==='svc'&&r&&r.worth?'<p><b>Worth to them over the contract (estimate):</b> '+both(r.worth,r.c)+'</p>':'')+
   '<button class="btn '+(d?'green':'purple')+'" data-w="'+w.id+'" aria-pressed="'+d+'">'+(d?'Agreed: tap to undo':'Mark as agreed')+'</button><br>'+srcHTML('w_'+w.id)+'</div>'}).join('')}
 function verdictOf(zone,nos,chk){
- if(zone==='walk')return{word:'✕ Walk away',cls:'no'};
+ if(zone==='walk')return{word:'✕ Below walk-away: do not accept',cls:'no'};
  if(nos)return{word:'✕ Not acceptable',cls:'no'};
  if(zone==='accept')return{word:'! Acceptable',cls:'check'};
  return{word:'✓ '+ZONE[zone],cls:chk?'check':'ok'}}
@@ -1659,7 +1662,7 @@ function qNumber(){let t=String($('qNum').value).trim().toLowerCase().replace(/[
  let x=parseFloat(t);if(!isFinite(x))return NaN;x*=k;if(Q.mode!=='pct'&&x>=1e5)x/=1e6;return x}
 function qPrice(){const x=qNumber();if(x===null)return null;if(!isFinite(x))return NaN;const c=qn('qShips'),tech=+Q.tech,list=+Q.hull;
  const svc=((Q.mp==='bai'?(qn('qM')||0):0)+(Q.tp==='bai'?(qn('qT')||0):0))*20;
- if(Q.mode==='ship')return x;if(Q.mode==='shipT')return x-tech;if(Q.mode==='pct')return list*(1-x/100);
+ if(Q.mode==='ship')return x;if(Q.mode==='shipT')return x-tech;if(Q.mode==='pct')return list*(1-x/100);if(Q.mode==='off')return list-x;
  if(Q.mode==='total'){if(!Q.incDone)return undefined;if(!(c>0))return NaN;if((Q.inc.M&&!isFinite(qn('qM')))||(Q.inc.Tr&&!isFinite(qn('qT'))))return 'svc';return x/c-(Q.inc.T?tech:0)-(Q.inc.M?qn('qM')*20:0)-(Q.inc.Tr?qn('qT')*20:0)}return null}
 function qLate(p,list,c){if(Q.del==='ok')return{need:false};
  const onN=Q.del==='late'?0:qn('qOnN'),lateN=c-onN,raw=$('qLateD').value.trim(),D=raw===''?0:qn('qLateD'),when=swName(Q.lateW);
@@ -1695,16 +1698,17 @@ function qWork(p){const x=qNumber(),c=qn('qShips'),tech=+Q.tech,tn=TECH[Q.tech],
  const svc=((Q.mp==='bai'?(qn('qM')||0):0)+(Q.tp==='bai'?(qn('qT')||0):0))*20;
  if(Q.mode==='shipT')return 'Working: '+m(x)+' − '+m(tech)+' '+tn+' technology ';
  if(Q.mode==='pct')return 'Working: '+m(list)+' list × (100% − '+x+'%) ';
+ if(Q.mode==='off')return 'Working: '+m(list)+' list − '+m(x)+' off ';
  if(Q.mode==='total'&&!(Q.inc.T||Q.inc.M||Q.inc.Tr))return 'Working: '+m(x)+' ÷ '+c+' ships ';
  if(Q.mode==='total')return 'Working: '+m(x)+' ÷ '+c+' ships = '+m(x/c)+(Q.inc.T?' − '+m(tech)+' '+tn+' technology':'')+(Q.inc.M?' − '+m(qn('qM')*20)+' maintenance (20 × '+m(qn('qM'))+')':'')+(Q.inc.Tr?' − '+m(qn('qT')*20)+' training (20 × '+m(qn('qT'))+')':'')+' ';
  return ''}
 function qDraw(){Object.keys(QKEY).forEach(id=>document.querySelectorAll('#'+id+' button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.q===String(Q[QKEY[id]]))));
- const us=Q.who==='us';$('qUsBox').hidden=!us;$('qTotBox').hidden=Q.mode!=='total';$('qNumBox').hidden=!Q.mode;
+ const us=Q.who==='us';$('qUsBox').hidden=!us;$('qTotBox').hidden=Q.mode!=='total';$('qNumBox').hidden=!Q.mode;$('qInAsk').hidden=!['ship','pct','off'].includes(Q.mode);
  document.querySelectorAll('#qInc button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.k==='none'?Q.incNone:!!Q.inc[b.dataset.k]));
  $('qTechIn').hidden=!((Q.mode==='total'&&Q.inc.T)||Q.mode==='shipT');$('qMIn').hidden=!(Q.mode==='total'&&Q.inc.M);$('qTIn').hidden=!(Q.mode==='total'&&Q.inc.Tr);
  $('qModeH').textContent=us?'2. How will we say the price?':'2. How did they give the price?';
  $('qNoteL').textContent=us?'What we ask for in return':'Anything else they said or asked for';
- $('qNumL').textContent={ship:'Price per ship, $ million (e.g. 33.6)',shipT:'Price per ship with technology, $ million (e.g. 43.6)',pct:'Discount off list, % (e.g. 30.25)',total:'Total for all ships, $ million (e.g. 436)'}[Q.mode]||'The number';
+ $('qNumL').textContent={ship:'Price per ship, $ million (e.g. 33.6)',shipT:'Price per ship with technology, $ million (e.g. 43.6)',pct:'Discount off list, % (e.g. 30.25)',off:'Money off each ship, $ million (e.g. 10)',total:'Total for all ships, $ million (e.g. 436)'}[Q.mode]||'The number';
  $('qMBox').hidden=Q.mp!=='bai';$('qTBox').hidden=Q.tp!=='bai';
  $('qLateBox').hidden=Q.del==='ok';$('qOnBox').hidden=Q.del!=='some';
  if(Desk.nextRung){const r=Desk.nextRung();$('qPlanTxt').textContent=r?'Planned step: '+r[0]+'% off. Ask for: '+r[1]+'.':'No planned steps left. Hold on price, or add a variable.'}
@@ -1878,7 +1882,7 @@ function pkg(dl){const d=dl||S.deal,net=P()*(1-d.disc/100),svc=d.m+d.t;
  return{net,svc,svcPts,agreed,worth,yearly,clear:worth+(d.fadv||0)*LIFE/P()*100-walk()}}
 
 /* ---------- ZOPA drawing ---------- */
-function evalDeal(){const th=last("them"),n=S.log.filter(l=>l.w==="them").length;if(th&&th.deal)return{dl:th.deal,who:"Bent Anchor's latest offer ("+n+")",short:"Their package"};return{dl:null,who:"the offer on screen (not sent yet)",short:"On-screen package"}}
+function evalDeal(){const th=last("them"),n=S.log.filter(l=>l.w==="them").length;if(th&&th.deal)return{dl:th.deal,who:"Bent Anchor's latest offer ("+n+")",short:"Their package"};const none=!S.log.length&&!(document.getElementById("qNum")||{}).value;return{dl:null,who:none?"our planned starting package (no offer yet)":"the offer on screen (not sent yet)",short:none?"Our starting plan":"On-screen package"}}
 function drawZopa(){
  const svg=$("zopa"),W=Math.max(320,svg.clientWidth||900),pad=14,w0=walk(),fl=floorNow(),c=S.cfg,EV=evalDeal(),p=pkg(EV.dl||undefined);
  /* Only the last 3 offers per side go on the bar. The full history is in Offers over time. The scale is set by our own limits, so it stays still, and widens only for an offer outside it. */
@@ -1960,8 +1964,8 @@ function drawLines(){
  add(p.yearly<=T.limit?"pass":"fail",`Yearly cap: $${T.limit}M per ship`,"Board mandate",`Now ${mm(p.yearly)}. Even list price is ${mm((P()+techV())/LIFE+TP)}.`);
  add(d.del==="all"?"pass":d.del==="some"?"check":"fail","Operating by Spring Year 2","Primary goal",d.del==="all"?"All ships on time.":d.del==="some"?(d.onT!=null?`${d.onT} of ${d.ships} by Spring Year 2. Team minimum ${T.minOn}.`:"Goal at risk. Crews and shipments are planned."):"Misses the primary goal.");
  add(d.ships>=10?(d.ships>10?"check":"pass"):"fail","10 ships","Primary goal",d.ships===10?"Goal met.":d.ships>10?"Above goal. Use options instead.":"Below the goal.");
- add(d.mShort||d.m>TPM+1e-9?"fail":"pass","Maintenance for 20 years","Board mandate",d.mShort?"Bent Anchor contract is under 20 years.":d.m<=TPM+1e-9?`Now ${mm(d.m)} a year per ship. Third party is $0.60M.`:`Now ${mm(d.m)}. A third party is cheaper.`);
- add(d.t>TPT+1e-9?"fail":d.tShort?"check":"pass","Training for each ship's life","Board wish",d.tShort?"Bent Anchor contract is under 20 years.":d.t<=TPT+1e-9?`Now ${mm(d.t)} a year per ship. Third party is $0.30M.`:`Now ${mm(d.t)}. A third party is cheaper.`);
+ add(d.mShort?"fail":d.m>TPM+1e-9?"check":"pass","Maintenance for 20 years","Board mandate",d.mShort?"Bent Anchor contract is under 20 years.":d.m<=TPM+1e-9?`Now ${mm(d.m)} a year per ship. Third party is $0.60M.`:`Now ${mm(d.m)} a year per ship. Allowed, but a third party is cheaper ($0.60M). Push back or switch.`);
+ add(d.t>TPT+1e-9||d.tShort?"check":"pass","Training for each ship's life","Board wish",d.tShort?"Bent Anchor contract is under 20 years.":d.t<=TPT+1e-9?`Now ${mm(d.t)} a year per ship. Third party is $0.30M.`:`Now ${mm(d.t)} a year per ship. Allowed, but a third party is cheaper ($0.30M). Push back or switch.`);
  add("keep","Similar technology on purchased ships","Board mandate","Vendor prices are non-negotiable.");
  add("keep","Long-term partnership","Objective","They score us on the SVI.");
  const lab={pass:"✓ Pass",check:"! Check",fail:"✕ Breached",keep:"Keep to"};
@@ -2006,7 +2010,7 @@ function checkMove(v,who,ask){
   if(us&&!ask)out.push(["warn","! Name what we get in return."]);
  }else{
   if(th&&v<th.d)out.push(["warn","! They moved back. Ask why, calmly."]);
-  if(v<w0)out.push(["warn",`! Headline is ${(w0-v).toFixed(1)} % points under the hard line. Only a package can close that gap.`]);
+  if(v<w0)out.push(["warn",`! Headline is ${(w0-v).toFixed(1)} % points under the hard line. Services or agreed extras must make up the gap. Check the package line.`]);
   else if(v>=S.cfg.thi)out.push(["good","✓ At or above our target range."]);
   else if(v>=S.cfg.tlo)out.push(["good","✓ In our target range."]);
   else out.push(["good","✓ Above the hard line. Keep going for target."]);
