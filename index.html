@@ -155,6 +155,33 @@ body.safe .pv{display:none!important}
 #paneCalc .tile.win{background:var(--purple-bg);border:2px solid var(--purple);border-left:8px solid var(--purple)}
 #paneCalc .tile.wait{border-left:8px solid var(--soft)}
 #paneCalc .tile.wide{grid-column:1/-1}
+#paneCalc .pkg{display:flex;flex-direction:column;gap:2px}
+#paneCalc .pkgMain{background:var(--blue-soft);border:2px solid var(--blue);border-radius:10px;padding:10px 12px}
+#paneCalc .pkgMain>label,#paneCalc .pkgShip>label{margin-top:0;font-size:1rem}
+#paneCalc .pkgMain>label{color:var(--blue)}
+#paneCalc .u{display:block;font-weight:400;font-size:.84rem;color:var(--muted);line-height:1.3}
+#paneCalc #pkgN{font-size:1.5rem;font-weight:700;padding:6px 10px}
+#paneCalc input[type=range]{width:100%;height:36px;margin:4px 0 0;accent-color:var(--blue);display:block}
+#paneCalc input[type=range]:disabled{opacity:.5}
+#paneCalc .pkgIn{font-size:.88rem;margin:6px 0 0}
+#paneCalc .pkgTicks{display:flex;flex-wrap:wrap;gap:4px 18px;align-items:center;margin-top:6px}
+#paneCalc .pkgTicks .lab{margin:0}
+#paneCalc .pkgTicks .qaTick{margin-top:0}
+#paneCalc .pkgTicks .qaTick input{accent-color:var(--blue)}
+#paneCalc .pkgLink{font-size:.88rem;font-weight:700;color:var(--purple);background:var(--purple-soft);border-radius:6px;padding:4px 10px;margin:8px 0}
+#paneCalc .pkgShip{padding:0 2px}
+#paneCalc .pkgShip #price{font-size:1.2rem}
+#paneCalc details.convD,#paneCalc details.yrs{margin-top:8px}
+#paneCalc details.convD>summary,#paneCalc details.yrs>summary{cursor:pointer;font-weight:700;font-size:.88rem;min-height:36px;padding:7px 0}
+#paneCalc details.convD .conv{margin-top:2px}
+#paneCalc .svcBox{display:block}
+#paneCalc details.termsD{grid-column:1/-1;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:6px 10px}
+#paneCalc details.termsD>summary{cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#paneCalc details.termsD>summary .u{display:inline}
+#paneCalc details.termsD[open]>summary{margin-bottom:8px}
+#paneCalc .stat.more{display:none}
+body.moreFig #paneCalc .stat.more{display:flex}
+#paneCalc .moreBtn{font:inherit;font-size:.8rem;font-weight:700;background:transparent;color:inherit;border:2px solid currentColor;border-radius:7px;padding:2px 9px;min-height:32px;cursor:pointer;justify-self:start}
 #paneCalc .tileHead{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
 #paneCalc .badge{font-size:.8rem;font-weight:700;border-radius:7px;padding:1px 7px;background:var(--card)}
 #paneCalc .tile.ok .badge{background:var(--green-bg);color:var(--green)}
@@ -412,6 +439,11 @@ body.safe .pv{display:none!important}
 #paneCalc .delta{font-size:.88rem;font-weight:700;margin:5px 0 0}
 @media (min-width:1400px){#paneBoard #lines{column-count:2;column-gap:24px}#paneBoard .hl{break-inside:avoid}#paneBoard .hl:first-child{border-top:1px solid var(--line)}}
 #paneCalc .whoSeg{display:flex;gap:4px;margin-bottom:6px}
+#paneCalc .whoSeg button .u{color:inherit;font-weight:400}
+#paneCalc .whoAsk{background:var(--yellow-bg);border:2px solid var(--yellow-line);border-radius:8px;padding:8px 10px;font-weight:700;margin:4px 0 6px}
+#paneCalc .saved.bad{color:var(--red)}
+#paneCalc .pkgWarn{background:var(--yellow-bg);border:2px solid var(--yellow-line);border-radius:8px;padding:8px 10px;font-size:.88rem;font-weight:700;margin:8px 0 0;color:var(--ink)}
+#paneCalc .pkgWarn .btn{margin-top:6px}
 #paneCalc .whoSeg button{font:inherit;font-weight:700;flex:1 1 0;min-height:44px;background:var(--bg);color:var(--ink);border:2px solid var(--line);border-radius:6px;cursor:pointer}
 #paneCalc .whoSeg button[aria-pressed="true"][data-who="us"]{background:var(--blue);border-color:var(--blue);color:var(--panel)}
 #paneCalc .whoSeg button[aria-pressed="true"][data-who="them"]{background:var(--orange);border-color:var(--orange);color:var(--panel)}
@@ -422,14 +454,180 @@ body.safe .pv{display:none!important}
 #paneCalc #qaPanel .qaGrid{grid-template-columns:minmax(0,.8fr) minmax(0,1.6fr) minmax(0,1fr) minmax(0,.9fr)}
 @media (max-width:640px){#paneCalc #qaPanel .qaGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
+
+/* ---------- Simple mode and Enter offer ---------- */
+body:not(.adv) .mtab.adv{display:none}
+html,body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.qSeg button[aria-pressed="true"]{box-shadow:inset 0 0 0 3px var(--fg)}
+.qSeg button[aria-pressed="true"]::before{content:"\2713  ";font-weight:700}
+#paneCalc .chip[aria-pressed="true"]::before,#paneCalc .whoSeg button[aria-pressed="true"]::before,.mtab[aria-selected="true"]::before{content:"\2713  "}
+@media print{.qSeg button[aria-pressed="true"],#paneCalc .chip[aria-pressed="true"],.mtab[aria-selected="true"]{text-decoration:underline;text-decoration-thickness:3px}}
+body:not(.adv) #tab-vars{display:none!important}
+#advBtn[aria-pressed="true"]{background:var(--panel2)}
+.tWrap.qWrap{max-width:820px}
+#paneQuick h2{font-size:1.2rem;margin:0 0 8px}
+#paneQuick .muted{color:var(--muted)}
+#paneQuick .small{font-size:.92rem}
+.qSeg{display:flex;flex-wrap:wrap;gap:8px}
+.qSeg button{font:inherit;font-weight:700;min-height:48px;padding:8px 14px;border:2px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);cursor:pointer;text-align:left}
+.qSeg button .u{display:block;font-weight:400;font-size:.86rem;color:var(--muted)}
+.qSeg button[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:var(--panel)}
+.qSeg button[aria-pressed="true"] .u{color:inherit}
+#qWho button{flex:1 1 200px;font-size:1.1rem}
+#qWho button[data-q="them"][aria-pressed="true"]{background:var(--orange);border-color:var(--orange)}
+#qMode button{flex:1 1 220px}
+.qField{margin-top:14px}
+.qField>label,.qField>.lab{display:block;font-weight:700;margin-bottom:4px}
+.qField input{font:inherit;padding:8px 10px;min-height:46px;border:2px solid var(--line);border-radius:8px;background:var(--panel);color:var(--fg);width:100%;max-width:300px}
+#qNum{font-size:1.6rem;font-weight:700}
+#qNote{max-width:100%}
+.qAsk{background:var(--purple-soft);color:var(--fg);border-radius:6px;padding:8px 10px;margin:10px 0 0;font-weight:700}
+.qOut{font-weight:700;margin-top:10px;padding:10px 12px;border-radius:6px;background:var(--panel2)}
+.qOut.good{background:var(--green-soft);color:var(--green)}
+.qOut.bad{background:var(--red-soft);color:var(--red)}
+.qSum{font-size:1.05rem;line-height:1.55;margin:0 0 10px}
+.qSend{width:100%;min-height:56px;font-size:1.1rem}
+.qSend.them{background:var(--orange)}
+.qSend:disabled{opacity:.5;cursor:not-allowed}
+.qLate{background:var(--panel2);border-radius:8px;padding:10px 12px;margin-top:8px}
+.qLate .qField:first-child{margin-top:0}
+.qLate .lab{display:block;font-weight:700;margin-bottom:4px}
+.qLate+.qLate{margin-top:8px}
+.qOut.warn{background:var(--yellow-soft);color:var(--fg)}
+#paneBoard .lat{border-left:6px solid var(--line);border-radius:6px;padding:9px 12px;margin-top:8px}
+#paneBoard .lat.t{border-color:var(--orange);background:var(--orange-soft)}
+#paneBoard .lat.u{border-color:var(--blue);background:var(--blue-soft)}
+#paneBoard .lat b{display:block;font-size:1.05rem}
+#paneBoard .lat span{display:block;font-size:.95rem;margin-top:2px}
+#paneBoard .latGap{margin-top:10px;font-weight:700}
+body:not(.adv) #ladCard{display:none!important}
+.qFF{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;font-size:.88rem;margin:0 0 6px}
+.qFF .ffTag{font-size:.84rem}
+#paneQuick .ffBox input{width:20px;height:20px}
+#paneQuick .srcBtn{font:inherit;font-size:.84rem;font-weight:400;background:transparent;border:0;padding:2px 0;min-height:28px;color:var(--muted);cursor:pointer;text-decoration:underline}
+#paneQuick .srcBtn::after{content:" ›"}
+#paneQuick .src{flex-basis:100%;background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:.86rem}
+#paneQuick .src .q{margin:0 0 8px}
+#paneQuick .src blockquote{margin:3px 0;padding-left:9px;border-left:4px solid var(--line)}
+#paneQuick .src .read{font-weight:700;margin:6px 0 0}
+#paneQuick .tag{display:inline-block;font-size:.76rem;font-weight:700;border-radius:6px;padding:1px 7px}
+#paneQuick .tag.priv{background:var(--red-soft);color:var(--red);border:1px solid var(--red)}
+#paneQuick .tag.pub{background:var(--blue-soft);color:var(--blue)}
+#paneQuick .tag.rule{background:var(--green-soft);color:var(--green)}
+#paneQuick .tag.guide,#paneQuick .tag.goal{background:var(--yellow-soft);color:var(--yellow)}
+.qVerd ul{margin:6px 0 0;padding-left:20px;font-weight:400}
+.qTime{background:var(--yellow-soft);border-left:6px solid var(--yellow);border-radius:6px;padding:8px 12px;margin-top:8px;font-size:.92rem}
+.qLad{margin:8px 0 0;padding-left:22px}
+.qLad li{margin:2px 0}
+.qLad li.done{color:var(--muted)}
+.qLad li.next{font-weight:700}
+.qLink{font:inherit;font-weight:700;font-size:.9rem;background:transparent;color:var(--purple);border:2px solid var(--purple);border-radius:6px;padding:6px 10px;min-height:40px;cursor:pointer;margin-top:6px}
+#paneBoard details>summary,.tGrp>summary{list-style:none}
+#paneBoard details>summary::-webkit-details-marker,.tGrp>summary::-webkit-details-marker{display:none}
+#paneBoard details>summary::before,.tGrp>summary::before{content:"▸";display:inline-block;width:1.3em;color:var(--purple)}
+#paneBoard details[open]>summary::before,.tGrp[open]>summary::before{content:"▾"}
+#paneBoard details.moreD{margin-top:10px;border-top:1px solid var(--line);padding-top:6px}
+#paneBoard details.moreD>summary{cursor:pointer;font-weight:700;min-height:40px;display:flex;align-items:center;color:var(--purple)}
+#paneBoard details.moreD .rules{margin-top:8px}
+.optGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin-top:8px}
+.opt{border:2px solid var(--line);border-left:8px solid var(--orange);border-radius:8px;padding:10px 12px;background:var(--bg);min-width:0}
+.opt.best{border-color:var(--purple);border-left-color:var(--purple)}
+.optH{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center;justify-content:space-between}
+.optH b{font-size:1.08rem}
+.optStar{font-size:.84rem;font-weight:700;background:var(--purple-soft);color:var(--purple);border-radius:4px;padding:1px 8px}
+.optSent{font-size:.84rem;font-weight:700;background:var(--green-soft);color:var(--green);border-radius:4px;padding:1px 8px}
+.optV{font-weight:700;border-radius:5px;padding:4px 8px;margin:6px 0}
+.optV.good{background:var(--green-soft);color:var(--green)}.optV.warn{background:var(--yellow-soft);color:var(--fg)}.optV.bad{background:var(--red-soft);color:var(--red)}
+.opt dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;margin:4px 0 8px;font-size:.92rem}
+.opt dt{color:var(--muted)}.opt dd{margin:0;font-weight:700}
+.opt .big dd{font-size:1.05rem}
+.optB{display:flex;flex-wrap:wrap;gap:6px}
+.optB button{font:inherit;font-size:.88rem;font-weight:700;min-height:40px;padding:4px 10px;border:2px solid var(--line);border-radius:6px;background:var(--panel);color:var(--fg);cursor:pointer}
+.optB button.go{background:var(--orange);border-color:var(--orange);color:var(--panel)}
+.qOptRow{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
+.qOptRow input{font:inherit;padding:8px 10px;min-height:44px;border:2px solid var(--line);border-radius:8px;background:var(--panel);color:var(--fg);width:100%;max-width:340px}
+#paneQuick .locked{opacity:.6}
+#paneQuick .lockNote{font-size:.86rem;font-weight:700;color:var(--green)}
+#paneTerms h2{font-size:1.2rem;margin:0 0 6px}
+#paneTerms .muted{color:var(--muted)}
+.tCounts{display:flex;flex-wrap:wrap;gap:6px 14px;font-weight:700;margin-top:8px}
+.tGrp{margin:4px 0 0}
+.tGrp>summary{cursor:pointer;font-weight:700;font-size:1.1rem;min-height:44px;display:flex;align-items:center}
+.tList{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.term{border:1px solid var(--line);border-left:8px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--panel)}
+.term.st-play{border-left-color:var(--purple)}
+.term.st-open{padding:6px 10px}.term.st-open .tStat{margin-top:4px}.term.st-open .tStat button{min-height:38px;font-size:.86rem;font-weight:400}
+.term.st-agreed{border-left-color:var(--green);background:var(--green-soft)}
+.term.st-off{border-left-color:var(--red)}
+.term.st-off .tName{text-decoration:line-through;text-decoration-thickness:2px;color:var(--muted)}
+.termH{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
+.tName{font-size:1.05rem}
+.tType{font-size:.82rem;font-weight:700;border-radius:4px;padding:1px 7px;background:var(--panel2)}
+.tType.give{background:var(--blue-soft);color:var(--blue)}.tType.get{background:var(--orange-soft);color:var(--orange)}.tType.both{background:var(--purple-soft);color:var(--purple)}
+.tStat{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tStat button{font:inherit;font-size:.92rem;font-weight:700;min-height:42px;padding:5px 12px;border:2px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);cursor:pointer}
+.tStat button[aria-pressed="true"]{box-shadow:inset 0 0 0 3px var(--fg)}
+.tStat button[aria-pressed="true"]::before{content:"\2713  "}
+.tStat button[data-ts="open"][aria-pressed="true"]{background:var(--panel2)}
+.tStat button[data-ts="play"][aria-pressed="true"]{background:var(--purple);border-color:var(--purple);color:var(--panel)}
+.tStat button[data-ts="agreed"][aria-pressed="true"]{background:var(--green);border-color:var(--green);color:var(--panel)}
+.tStat button[data-ts="off"][aria-pressed="true"]{background:var(--red);border-color:var(--red);color:var(--panel)}
+.tStat button[data-xs="play"][aria-pressed="true"]{background:var(--purple);border-color:var(--purple);color:var(--panel)}
+.tStat button[data-xs="agreed"][aria-pressed="true"]{background:var(--green);border-color:var(--green);color:var(--panel)}
+.tF{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 12px;margin-top:10px}
+.tF label{display:block;font-weight:700;font-size:.9rem}
+.tF input,.tF select{font:inherit;width:100%;padding:7px 9px;min-height:42px;border:2px solid var(--line);border-radius:6px;background:var(--panel);color:var(--fg);margin-top:3px;font-weight:400}
+.tF .wide{grid-column:1/-1}
+.tHint{font-size:.86rem;color:var(--muted);margin-top:4px}
+.tAdd{display:flex;flex-wrap:wrap;gap:8px;align-items:end;margin-top:8px}
+.tAdd input{font:inherit;padding:8px 10px;min-height:44px;border:2px solid var(--line);border-radius:8px;background:var(--panel);color:var(--fg);flex:1 1 220px}
+.qEx{border:2px solid var(--purple);border-radius:8px;padding:10px 12px;margin-top:14px;background:var(--bg)}
+.qEx h3{margin:0;font-size:1.05rem;color:var(--purple)}
+.qExRow{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.qExRow:first-of-type{border-top:0}
+.qExRow .nm{font-weight:700;flex:1 1 180px}
+.qExRow .val{font-variant-numeric:tabular-nums;font-size:.92rem}
+.qExRow .tStat{margin-top:0}
+.qExRow .tStat button{min-height:36px;font-size:.86rem}
+.qExAdd{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:10px;align-items:end}
+.qExAdd label{display:block;font-weight:700;font-size:.88rem}
+.qExAdd input,.qExAdd select{font:inherit;width:100%;padding:7px 9px;min-height:42px;border:2px solid var(--line);border-radius:6px;background:var(--panel);color:var(--fg);margin-top:3px}
+#paneBoard details.sheetD{margin-top:10px}
+#paneBoard details.sheetD>summary{cursor:pointer;font-weight:700;min-height:40px;display:flex;align-items:center;color:var(--purple)}
+#paneBoard #bSheet table{font-size:.92rem}
+.qS3>summary{list-style:none;cursor:pointer;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
+.qS3>summary::-webkit-details-marker{display:none}
+.qS3h{font-size:1.2rem;font-weight:700}
+.qS3s{flex:1 1 300px;font-size:.95rem}
+.qS3c{font-weight:700;color:var(--purple);border:2px solid var(--purple);border-radius:6px;padding:4px 10px}
+.qS3c::before{content:"▸ "}
+.qS3[open] .qS3s{display:none}
+.qS3[open] .qS3c::before{content:"▾ "}
+.qS3[open] .qS3c{font-size:.9rem}
+.qSt{display:inline-flex;gap:4px;flex-wrap:wrap}
+.qSt button{font:inherit;font-size:.82rem;font-weight:700;min-height:34px;padding:2px 9px;border:2px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);cursor:pointer}
+.qSt button[aria-pressed="true"]::before{content:"\2713  "}
+.qSt button[data-qst="play"][aria-pressed="true"]{background:var(--purple);border-color:var(--purple);color:var(--panel)}
+.qSt button[data-qst="agreed"][aria-pressed="true"]{background:var(--green);border-color:var(--green);color:var(--panel)}
+.qSt button[data-qst="off"][aria-pressed="true"]{background:var(--red);border-color:var(--red);color:var(--panel)}
+.qNotesB{font:inherit;font-size:.84rem;background:transparent;border:0;color:var(--purple);text-decoration:underline;cursor:pointer;min-height:30px;padding:0 2px}
+.qNotes{flex-basis:100%;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:6px 10px;background:var(--panel2);border-radius:6px;padding:8px 10px}
+.qNotes label{font-weight:700;font-size:.84rem}
+.qNotes input{font:inherit;width:100%;padding:6px 8px;min-height:38px;border:2px solid var(--line);border-radius:6px;background:var(--panel);color:var(--fg);margin-top:2px;font-weight:400}
+.qNotes .wide{grid-column:1/-1}
+.qOther .qField{margin-top:8px}
+.qNext{background:var(--yellow-soft);border:2px solid var(--yellow);border-radius:6px;padding:10px 12px;margin-top:10px;font-weight:700}
 </style>
 <div class="shell" id="shell"><div class="shellIn">
   <div class="mtabs" role="tablist" aria-label="Desk">
-    <button class="mtab pv" role="tab" id="mCalc" data-p="calc">Calculator</button>
+    <button class="mtab pv" role="tab" id="mQuick" data-p="quick">Enter offer</button>
+    <button class="mtab pv adv" role="tab" id="mTerms" data-p="terms">All terms</button>
     <button class="mtab" role="tab" id="mBoard" data-p="board">Board</button>
-    <button class="mtab pv" role="tab" id="mTeam" data-p="team">Team numbers</button>
     <button class="mtab pv" role="tab" id="mHelp" data-p="help">How to use</button>
-    <button class="mtab pv" role="tab" id="mD1" data-p="d1">Deliverable 1</button>
+    <button class="mtab pv adv" role="tab" id="mCalc" data-p="calc">Full detail (backup)</button>
+    <button class="mtab pv adv" role="tab" id="mTeam" data-p="team">Team numbers</button>
+    <button class="mtab pv adv" role="tab" id="mD1" data-p="d1">Deliverable 1</button>
+    <button class="mtab pv" type="button" id="advBtn" aria-pressed="false">More tools</button>
   </div>
   <div class="glance" id="glance" aria-live="polite"></div>
   <span class="clock" id="clock"></span>
@@ -438,14 +636,16 @@ body.safe .pv{display:none!important}
 
 <div id="paneCalc" hidden><div class="wrap">
   <div class="private">PRIVATE: Team 3 only. Never show this to Bent Anchor.</div>
+  <div class="yellow" style="margin:4px 0 8px"><p><b>Backup view.</b> This is the same engine as Enter offer, shown in full. Use Enter offer for normal offers. Use this only for rare cases: fuel savings, contracts under 20 years, 3 or 4 delivery batches, or odd units (per TEU, euros, lease rates). Anything you change here changes the offer on screen.</p><p style="margin-top:4px"><button type="button" class="btn small" onclick="Desk.advSet(false);Desk.pane('quick')">Back to Enter offer</button></p></div>
 
   <div class="bar wait" id="bar"><div class="barIn" aria-live="polite">
     <div><div class="verdict" id="verdict"></div><div class="vsub" id="verdictSub"></div></div>
     <div class="sizes">
+      <div class="stat main"><span>Whole cost to ShipX, <i id="l2" style="font-style:normal">all ships</i>, 20 years</span><b id="sAll20">-</b></div>
       <div class="stat main"><span>Yearly cost per ship</span><b id="sShipYear">-</b></div>
-      <div class="stat"><span>Yearly cost, <i id="l1" style="font-style:normal">all ships</i></span><b id="sAllYear">-</b></div>
-      <div class="stat"><span>Full cost per ship, 20 years</span><b id="sShip20">-</b></div>
-      <div class="stat main"><span>Deal total, <i id="l2" style="font-style:normal">all ships</i>, 20 years</span><b id="sAll20">-</b></div>
+      <div class="stat more"><span>Yearly cost, <i id="l1" style="font-style:normal">all ships</i></span><b id="sAllYear">-</b></div>
+      <div class="stat more"><span>Full cost per ship, 20 years</span><b id="sShip20">-</b></div>
+      <button class="moreBtn" id="moreFig" type="button" aria-expanded="false">More figures</button>
     </div>
     <div class="splitLine" id="splitLine"></div>
   </div></div>
@@ -454,23 +654,49 @@ body.safe .pv{display:none!important}
     <div class="col">
       <div class="tiles">
         <div class="tGroup">○ Flexible: start here</div>
-<div class="tile wide" id="t-price"><div class="tileHead"><h3>Ship price</h3><span class="badge"></span></div>
-          <label for="price">Ship price: one-off, $ million per ship, no technology</label><input id="price" type="number" inputmode="decimal" step="0.1" value="28"><div class="flag" data-for="price"></div>
-          <p class="pair" id="p-price"></p>
-          <div class="conv"><div class="lab">Did their number include more? Tap to convert it.</div>
+<div class="tile wide" id="t-price"><div class="tileHead"><h3>Package and ship price</h3><span class="badge"></span></div>
+          <div class="pkg">
+            <div class="pkgMain">
+              <label for="pkgN">1. Package price<span class="u">$ million, all ships, 20 years. Ships + technology + 20 years of Bent Anchor services. Their total has no services? Use Translate instead.</span></label>
+              <input id="pkgN" type="number" inputmode="decimal" step="any">
+              <input id="pkgR" type="range" step="0.5" aria-label="Package price slider">
+              <p class="pkgIn" id="pkgIn"></p>
+              <div class="pkgWarn" id="pkgWarn" role="status" hidden><span id="pkgWarnT"></span><br><button class="btn small" id="pkgToTr" type="button">Open Translate: all ships + technology</button></div>
+              <div class="pkgTicks"><span class="lab">This price includes</span>
+                <label class="qaTick"><input type="checkbox" id="pkgM"> Maintenance</label>
+                <label class="qaTick"><input type="checkbox" id="pkgT"> Training</label>
+              </div>
+            </div>
+            <div class="pkgLink" aria-hidden="true">&#8645; These two move together. Services stay where you set them.</div>
+            <div class="pkgShip">
+              <label for="price">2. Ship price, paid once<span class="u">$ million, for one ship, no technology</span></label>
+              <input id="price" type="number" inputmode="decimal" step="any" value="28"><div class="flag" data-for="price"></div>
+              <input id="priceR" type="range" step="0.05" aria-label="Ship price slider">
+              <p class="pair" id="p-price"></p>
+            </div>
+          </div>
+          <details class="convD" id="dConv"><summary>Their figure was for one ship, or included technology?</summary>
+          <div class="conv"><div class="lab">Type it in Ship price, then tap one.</div>
             <div class="row"><button class="chip" data-conv="tech">Included technology</button><button class="chip" data-conv="all">Was for all ships</button><button class="chip" data-conv="both">All ships + technology</button></div>
-            <div class="convMsg" id="convMsg" role="status" hidden><span id="convTxt"></span><button class="link" id="convUndo">Undo</button></div>
-          </div><div data-source="price"></div></div>
+          </div></details>
+          <div class="convMsg" id="convMsg" role="status" hidden><span id="convTxt"></span><button class="link" id="convUndo">Undo</button></div>
+          <div data-source="price"></div></div>
 <div class="tile" id="t-maint"><div class="tileHead"><h3>Maintenance</h3><span class="badge"></span></div>
           <div class="chips" data-key="mProv"><button class="chip" data-v="bai">Bent Anchor</button><button class="chip" data-v="third">Third party</button></div>
-          <div class="two" id="mBox"><div><label for="mCost">Price: $M a year per ship</label><input id="mCost" type="number" inputmode="decimal" step="0.01" value="0.55"><div class="flag" data-for="mCost"></div></div>
-          <div><label for="mYears">Contract years</label><input id="mYears" type="number" inputmode="numeric" step="1" value="20"><div class="flag" data-for="mYears"></div></div></div>
+          <div class="svcBox" id="mBox"><div><label for="mCost">$M a year, for one ship</label><input id="mCost" type="number" inputmode="decimal" step="0.01" value="0.55"><div class="flag" data-for="mCost"></div>
+          <input id="mCostR" type="range" min="0" max="1.5" step="0.01" aria-label="Maintenance price slider"></div>
+          <details class="yrs" id="dmYears"><summary>Change years (<span id="mYearsL">20</span>)</summary><div><label for="mYears">Contract years</label><input id="mYears" type="number" inputmode="numeric" step="1" value="20"><div class="flag" data-for="mYears"></div></div></details></div>
           <p class="pair" id="p-maint"></p><p class="sub" id="s-maint"></p><div data-source="maint"></div></div>
 <div class="tile" id="t-train"><div class="tileHead"><h3>Crew training</h3><span class="badge"></span></div>
           <div class="chips" data-key="tProv"><button class="chip" data-v="bai">Bent Anchor</button><button class="chip" data-v="third">Third party</button></div>
-          <div class="two" id="tBox"><div><label for="tCost">Price: $M a year per ship</label><input id="tCost" type="number" inputmode="decimal" step="0.01" value="0.3"><div class="flag" data-for="tCost"></div></div>
-          <div><label for="tYears">Contract years</label><input id="tYears" type="number" inputmode="numeric" step="1" value="20"><div class="flag" data-for="tYears"></div></div></div>
+          <div class="svcBox" id="tBox"><div><label for="tCost">$M a year, for one ship</label><input id="tCost" type="number" inputmode="decimal" step="0.01" value="0.3"><div class="flag" data-for="tCost"></div>
+          <input id="tCostR" type="range" min="0" max="1.5" step="0.01" aria-label="Training price slider"></div>
+          <details class="yrs" id="dtYears"><summary>Change years (<span id="tYearsL">20</span>)</summary><div><label for="tYears">Contract years</label><input id="tYears" type="number" inputmode="numeric" step="1" value="20"><div class="flag" data-for="tYears"></div></div></details></div>
           <p class="pair" id="p-train"></p><p class="sub" id="s-train"></p><div data-source="train"></div></div>
+<div class="tile" id="t-hull"><div class="tileHead"><h3>Hull (BA-2500)</h3><span class="badge"></span></div>
+          <div class="chips" data-key="ship"><button class="chip" data-v="40">Bubble-Hull</button><button class="chip" data-v="31.5">Base hull</button></div>
+          <p class="pair" id="p-hull"></p><p class="sub" id="s-hull"></p><div data-source="hull"></div></div>
+<details class="termsD" id="dTerms"><summary>More terms <span class="u">Guarantees, future orders, payment, financing, fuel and extras</span></summary><div class="tiles">
 <div class="tile" id="t-guar"><div class="tileHead"><h3>Guarantees and warranties</h3></div>
   <div class="two"><div><label for="wYears">Extra years</label><input id="wYears" type="number" step="1" placeholder="Optional"><div class="flag" data-for="wYears"></div></div>
   <div><label for="wCost">Cost, $M total, all ships</label><input id="wCost" type="number" inputmode="decimal" step="0.1" placeholder="Optional"><div class="flag" data-for="wCost"></div></div></div></div><div class="tile" id="t-fut"><div class="tileHead"><h3>Future purchases</h3></div>
@@ -479,10 +705,7 @@ body.safe .pv{display:none!important}
   <div><span class="lab">Paid on delivery, %</span><p class="pair" id="onDelivery"></p></div></div>
   <p class="sub">Recorded only. The briefs give no interest rate.</p><div data-source="terms"></div></div><div class="tile" id="t-fin"><div class="tileHead"><h3>Financing</h3></div>
   <p class="pair">Planned as outright purchase.</p>
-  <p class="sub">Leasing is not priced here. Bent Anchor is paid in full either way. "We have the funds" comes from our private briefing, so the team decides before anyone says it.</p><div data-source="lease"></div></div><div class="tile" id="t-hull"><div class="tileHead"><h3>Hull (BA-2500)</h3><span class="badge"></span></div>
-          <div class="chips" data-key="ship"><button class="chip" data-v="40">Bubble-Hull</button><button class="chip" data-v="31.5">Base hull</button></div>
-          <p class="pair" id="p-hull"></p><p class="sub" id="s-hull"></p><div data-source="hull"></div></div>
-<div class="tile" id="t-other"><div class="tileHead"><h3>Fuel and other yearly costs</h3></div>
+  <p class="sub">Leasing is not priced here. Bent Anchor is paid in full either way. "We have the funds" comes from our private briefing, so the team decides before anyone says it.</p><div data-source="lease"></div></div><div class="tile" id="t-other"><div class="tileHead"><h3>Fuel and other yearly costs</h3></div>
   <div class="two"><div><label for="fuel">Fuel saving, $M a year per ship</label><input id="fuel" type="number" step="0.01" value="0"><div class="flag" data-for="fuel"></div></div>
   <div><label for="other">Other cost, $M a year per ship</label><input id="other" type="number" step="0.01" value="0"><div class="flag" data-for="other"></div></div></div>
   <p class="sub" id="s-fuel"></p><p class="sub" id="evalFuel"></p><p class="sub">Other cost: only a yearly cost we would pay with either builder. For a Bent Anchor-only fee, use Add an extra with Costs ShipX.</p><div data-source="fuelOther"></div></div><div class="tile wide qa" id="qaPanel"><div class="tileHead"><h3>Add an extra</h3></div>
@@ -501,6 +724,7 @@ body.safe .pv{display:none!important}
         <p class="saved" id="qaMsg" role="status"></p>
         <div id="qaList"></div>
       </div>
+</div></details>
 <div class="tGroup">◐ Part fixed: flexible, but linked to what we need</div>
 <div class="tile wide" id="t-tech"><div class="tileHead"><h3>Technology</h3><span class="badge"></span></div>
           <div class="chips" data-key="tech"><button class="chip" data-v="0">None</button><button class="chip" data-v="4">Low</button><button class="chip" data-v="8">Med-Low</button><button class="chip" data-v="10">Medium</button><button class="chip" data-v="12">Med-High</button><button class="chip" data-v="14">High</button></div>
@@ -521,16 +745,17 @@ body.safe .pv{display:none!important}
 
       <div class="segTabs" role="tablist" aria-label="Offer tools"><button role="tab" data-seg="sendP" aria-selected="true">Send offer</button><button role="tab" data-seg="trPanel" aria-selected="false">Translate</button><button role="tab" data-seg="qaPanel" aria-selected="false">Add extra</button></div>
       <div class="panel" id="sendP"><h2>Send this offer</h2>
-        <div class="whoSeg" role="group" aria-label="Whose offer is this?"><button data-who="them" aria-pressed="true">Their offer</button><button data-who="us" aria-pressed="false">Our offer</button></div>
+        <div class="whoSeg" role="group" aria-label="Whose offer is this?"><button data-who="them" aria-pressed="false">Their offer<span class="u">Bent Anchor said it</span></button><button data-who="us" aria-pressed="false">Our offer<span class="u">ShipX will say it</span></button></div>
+        <p class="whoAsk" id="whoAsk">Step 1: whose offer is this? Tap one above. The Desk asks every time.</p>
         <div class="row" id="fillRow" hidden><button class="btn alt small" id="fillNext">Fill our next step</button></div>
         <label for="saveAsk" id="saveAskL">What they asked for</label><input id="saveAsk" type="text">
         <div class="gnList" id="calcChecks" aria-live="polite"></div>
-        <div class="row" style="margin-top:8px"><button class="btn" id="saveX" hidden>Send ShipX offer to Board</button><button class="btn orange" id="saveB">Send Bent Anchor offer to Board</button></div>
+        <div class="row" style="margin-top:8px"><button class="btn" id="saveX" hidden>Send ShipX offer to Board</button><button class="btn orange" id="saveB" hidden>Send Bent Anchor offer to Board</button></div>
         <p class="saved" id="saveMsg" role="status"></p>
       </div>
 
       <div class="panel" id="trPanel" hidden><h2>Translate their number</h2>
-        <p class="sub">First ask: "Could we put that as a net price per ship in $ million, as in the shared brief?"</p>
+        <p class="sub">First ask: "Thank you. Could you confirm that as a package price in $ million, and what it includes?"</p>
         <label for="trMode">How did they say it?</label><select id="trMode"></select>
         <label for="trVal" id="trValL">Their figure</label><input id="trVal" type="text" inputmode="decimal">
         <p class="trOut" id="trOut" role="status"></p>
@@ -545,7 +770,7 @@ body.safe .pv{display:none!important}
 
       <div class="panel" id="evalCard"><h2>How it compares</h2>
         <div class="cmpWrap"><table>
-          <tr><th>Deal</th><th class="r">Ship price, one-off</th><th class="r">Yearly cost per ship</th><th class="r">Deal total, 20 years</th></tr>
+          <tr><th>Deal</th><th class="r">Ship price, one-off</th><th class="r">Yearly cost per ship</th><th class="r">Whole cost to ShipX, 20 years</th></tr>
           <tbody id="cmp"></tbody>
         </table></div>
         <p class="pair" id="evalGap"></p>
@@ -600,9 +825,9 @@ body.safe .pv{display:none!important}
         <tr><td><b>Ship price with technology</b></td><td>Ship price plus the technology price.</td></tr>
         <tr><td><b>Yearly cost per ship</b></td><td>Full cost of one ship ÷ 20 years. The board's measure. Limit is $8.5m.</td></tr>
         <tr><td><b>Full cost per ship</b></td><td>Ship price, technology, maintenance and training over 20 years.</td></tr>
-        <tr><td><b>Deal total</b></td><td>Full cost of all ships over 20 years.</td></tr>
-        <tr><td><b>Paid to Bent Anchor</b></td><td>What they receive. Shown in the deal sheet view. It leaves out third-party services.</td></tr>
-        <tr><td><b>Package</b></td><td>Use only for the technology package.</td></tr>
+        <tr><td><b>Whole cost to ShipX</b></td><td>Full cost of all ships over 20 years, including third-party services. Top of the Calculator.</td></tr>
+        <tr><td><b>Package price</b></td><td>What Bent Anchor is paid: ships, technology, their services and any guarantee, all ships, 20 years. Also called Paid to Bent Anchor. Shown in the deal sheet view. It leaves out third-party services.</td></tr>
+        <tr><td><b>Technology package</b></td><td>Say it in full, so it is not mixed up with the package price.</td></tr>
         <tr><td><b>BATNA</b></td><td>Our best option with no deal: Global Mariner.</td></tr>
         <tr><td><b>Walk-away</b></td><td>Our reservation point (the worst deal we accept). Our estimate.</td></tr>
       </table>
@@ -636,20 +861,26 @@ body.safe .pv{display:none!important}
 <div id="paneBoard"><div class="wrap">
   <div class="safeNote" id="safeNote" hidden>Private figures are hidden. This view shows only offers both sides have heard. Press Show private figures when the screen is safe.</div>
 
+  <div id="boardNext" class="pv"></div>
+  <section class="card" id="latCard" aria-labelledby="lt"><div class="head"><h2 id="lt">Offers on the table</h2></div><div id="latest"></div><details class="sheetD pv" id="bSheetD"><summary>Deal sheet for Deliverable 2 (the offer on screen)</summary><p class="small muted">Copy into Team 3's columns. All figures in $ million.</p><div class="scroll"><table id="bSheet"></table></div></details></section>
+  <section class="card pv" id="bOptsCard" hidden><div class="head" style="display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;justify-content:space-between"><h2 style="margin:0">Their packages, side by side</h2><button class="btn ghost sm" type="button" data-oclear="1" style="font:inherit;font-weight:700;min-height:38px;padding:4px 10px;border:2px solid var(--line);border-radius:6px;background:transparent;color:var(--fg);cursor:pointer">Clear packages</button></div><p class="small muted" style="margin:4px 0 0">Saved, not sent. Compare them, then send the one we reply to. <span class="spriv">PRIVATE</span></p><div class="optGrid" id="bOpts"></div></section>
+
   <section class="card" aria-labelledby="zt">
     <div class="head">
       <h2 id="zt">ZOPA (zone of possible agreement): discount off list</h2>
       <span class="pv"><span class="chip c-private">PRIVATE</span> Team 3 only. Never show Bent Anchor.</span>
     </div>
     <p class="small muted" id="zSub"></p>
+    <details class="moreD pv"><summary>How to read the ZOPA</summary><p class="small" id="zHelp" style="margin:6px 0 0"></p></details>
     <svg id="zopa" role="img" aria-label="ZOPA bar"></svg>
     <div class="stats pv" id="stats"></div>
     <div class="read pv" id="zRead" aria-live="polite"></div>
+    <details class="moreD pv" id="moreD"><summary>More numbers and good habits</summary><div id="moreHost"></div></details>
   </section>
 
-  <div class="boardRow"><div id="boardNext" class="pv"></div>
+  <div>
 <section class="card pv" aria-labelledby="hl">
-    <div class="head"><h2 id="hl">Our limits, from the briefs</h2><span class="chip c-private">PRIVATE</span></div>
+    <div class="head"><h2 id="hl">Our limits: is their offer acceptable?</h2><span class="chip c-private">PRIVATE</span></div>
     <div class="lines" id="lines"></div>
   </section></div>
 
@@ -677,9 +908,9 @@ body.safe .pv{display:none!important}
         </div>
       </div>
       <div class="stack">
-        <div class="card stack pv">
+        <div class="card stack pv" id="ladCard">
           <div class="head"><h2>Pattern of concessions</h2><span class="chip c-private">PRIVATE</span></div>
-          <p class="small muted">Draft. Each step is smaller, and each one is paid for. Tap a figure or ask to change it. Price it sends the step to the Calculator.</p>
+          <p class="small muted">Draft. Each step is smaller, and each one is paid for. Tap a figure or ask to change it. Use this step fills it in on Enter offer.</p>
           <div class="ladder" id="ladder"></div>
         </div>
       </div>
@@ -724,14 +955,16 @@ body.safe .pv{display:none!important}
       <div class="card stack">
         <h2>Lines for the table</h2>
         <div class="say"><b>Starting on flexible terms</b><p>"Before we get to numbers, could we start with what can work for both of us, such as service and payment terms?"</p></div>
-        <div class="say"><b>Going first</b><p>"Thanks for your time. We'd like to put a full proposal on the table, so you can see the whole picture."</p></div>
+        <div class="say"><b>Inviting their proposals</b><p>"Thank you for coming. As in our email, we'd welcome your proposals first. Could you walk us through each package?"</p></div>
+        <div class="say"><b>Replying with our package</b><p>"Thank you, that's helpful. Here is our full proposal, so you can see the whole picture."</p></div>
+        <div class="say"><b>If they have no proposal</b><p>"No problem. Let us put a full proposal on the table, so you can see the whole picture."</p></div>
         <div class="say"><b>Backing the number</b><p>"We've looked at market discounts and Global Mariner's list prices. What standard would you use?"</p></div>
         <div class="say"><b>Moving a little</b><p>"If you can confirm the slots, we can move to 39.25%."</p></div>
         <div class="say"><b>A sweetener</b><p>"That's helpful, thank you. Let us value it. How does it work alongside the price?"</p></div>
         <div class="say"><b>Adding a variable</b><p>"Could we look at this another way? What would a future order option be worth to you?"</p></div>
         <div class="say"><b>Near our limit</b><p>"We don't have much room left. This step is small because it's real."</p></div>
         <div class="say"><b>A disagreement on the future</b><p>"We see that differently. Could we tie it to the result, with a rebate if the saving falls short?"</p></div>
-        <div class="say"><b>They use different terms</b><p>"Could we put that as a net price per ship in $ million, as in the shared brief?"</p></div>
+        <div class="say"><b>They use different terms</b><p>"Thank you. Could you confirm that as a package price in $ million, and what it includes?"</p></div>
         <div class="say"><b>They say something is fixed</b><p>"Thanks for being clear. What sits behind that? Is there another way to meet that need?"</p></div>
         <div class="say"><b>Precise figures</b><p>Say 38.25% or $24.70M, never "about 38" or "around 25 million".</p></div>
         <div class="say"><b>Need time</b><p>"Let me check that for us." or "Shall we take a short team break?"</p></div>
@@ -790,6 +1023,91 @@ body.safe .pv{display:none!important}
 </div>
 
 </div>
+<div id="paneQuick" hidden><div class="tWrap qWrap">
+  <div class="tcard"><h2>Enter an offer</h2><p>Four steps, top to bottom. Fill in only what was said. <span class="spriv">PRIVATE</span></p><div class="qTime"><b>Need time?</b> "Let me check that for us." · "Can you repeat that figure, please?" · "Shall we take a short team break?"</div></div>
+<section class="tcard" id="qOptsCard" hidden><div class="head" style="display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;justify-content:space-between"><h2 style="margin:0">Their packages, side by side</h2><button class="btn ghost sm" type="button" data-oclear="1" style="font:inherit;font-weight:700;min-height:38px;padding:4px 10px;border:2px solid var(--line);border-radius:6px;background:transparent;color:var(--fg);cursor:pointer">Clear packages</button></div><p class="small muted" style="margin:4px 0 0">Saved, not sent. Compare them, then send the one we reply to. <span class="spriv">PRIVATE</span></p><div class="optGrid" id="qOpts"></div></section>
+  <div class="tcard">
+    <h2>1. Who made this offer?</h2>
+    <div class="qSeg" id="qWho" role="group" aria-label="Who made this offer"><button type="button" data-q="them" aria-pressed="false">Bent Anchor<span class="u">They said it</span></button><button type="button" data-q="us" aria-pressed="false">ShipX<span class="u">We will say it</span></button></div>
+    <div id="qUsBox" hidden style="margin-top:10px"><button class="tbtn" type="button" id="qPlan">Use our next planned step</button><p class="small muted" id="qPlanTxt" style="margin-top:6px" hidden></p><p class="small" id="qLadSaid" style="margin:8px 0 0"></p><p class="small muted" style="margin:2px 0 0">Our planned steps. The next one is always below what we last said.</p><ol class="qLad" id="qLad"></ol></div>
+  </div>
+  <div class="tcard">
+    <h2 id="qModeH">2. How did they give the price?</h2>
+    <div class="qFF" data-qff="price"></div>
+        <div class="qSeg" id="qMode" role="group" aria-label="How the price was given">
+      <button type="button" data-q="ship" aria-pressed="false">A price per ship<span class="u">"$28 million a ship"</span></button>
+      <button type="button" data-q="shipT" aria-pressed="false">Per ship, technology included<span class="u">"$38 million a ship with the tech package"</span></button>
+      <button type="button" data-q="pct" aria-pressed="false">A discount<span class="u">"30% off list"</span></button>
+      <button type="button" data-q="total" aria-pressed="false">One total for all ships<span class="u">"$436 million for the fleet", "contract value", "package price"</span></button>
+    </div>
+    <div class="qField" id="qNumBox" hidden><label for="qNum" id="qNumL">The number</label><input id="qNum" type="text" inputmode="decimal" autocomplete="off" placeholder="Number only"></div>
+    <div id="qTotBox" hidden>
+      <p class="qAsk">Ask: "Thank you. What does that total include?"</p>
+      <div class="qField"><span class="lab">Which costs are inside their number, besides the ships? Tap each one. We take them out to find the ship price.</span>
+        <div class="qSeg" id="qInc"><button type="button" data-k="T">Technology package</button><button type="button" data-k="M">Maintenance, 20 years</button><button type="button" data-k="Tr">Crew training, 20 years</button><button type="button" data-k="none">Nothing else: ships only</button></div></div>
+    </div>
+    <div class="qLate" id="qTechIn" hidden><span class="lab">Which technology package is inside the number? (Same setting as step 3.)</span><div class="qSeg" id="qTech2"><button type="button" data-q="0">None</button><button type="button" data-q="4">Low</button><button type="button" data-q="8">Med-Low</button><button type="button" data-q="10">Medium</button><button type="button" data-q="12">Med-High</button><button type="button" data-q="14">High</button></div></div>
+    <div class="qLate" id="qMIn" hidden><label for="qM2" class="lab">Maintenance price inside the number, $ million a year per ship (same as step 3)</label><span class="small muted" style="display:block;margin-bottom:4px">Third-party baseline: 0.60 means $600,000. Not sure? Ask: "What is the yearly maintenance price per ship in that?"</span><input id="qM2" type="text" inputmode="decimal" style="font:inherit;padding:8px 10px;min-height:46px;border:2px solid var(--line);border-radius:8px;background:var(--panel);color:var(--fg);max-width:300px;width:100%"></div>
+    <div class="qLate" id="qTIn" hidden><label for="qT2" class="lab">Training price inside the number, $ million a year per ship (same as step 3)</label><span class="small muted" style="display:block;margin-bottom:4px">Third-party baseline: 0.30 means $300,000. Not sure? Ask: "What is the yearly training price per ship in that?"</span><input id="qT2" type="text" inputmode="decimal" style="font:inherit;padding:8px 10px;min-height:46px;border:2px solid var(--line);border-radius:8px;background:var(--panel);color:var(--fg);max-width:300px;width:100%"></div>
+    <p class="qOut" id="qOut">Choose how the price was given, then type the number.</p>
+  </div>
+  <div class="tcard">
+    <details class="qS3" id="qS3" open><summary><span class="qS3h">3. What is in the deal</span><span class="qS3s" id="qS3s"></span><span class="qS3c" id="qS3c">Change</span></summary>
+    <p class="small muted">Everything in the deal, whether or not it was inside their number. Same as the last offer unless you change it. Anything set in step 2 shows here too.</p>
+    <div class="qField"><label for="qShips">Ships</label><div class="qFF" data-qff="ships"></div><input id="qShips" type="number" inputmode="numeric" step="1"></div>
+    <div class="qField"><span class="lab">Hull</span><div class="qFF" data-qff="hull"></div><div class="qSeg" id="qHull"><button type="button" data-q="40">Bubble-Hull<span class="u">$40.0M list</span></button><button type="button" data-q="31.5">Base hull<span class="u">$31.5M list</span></button></div></div>
+    <div class="qField"><span class="lab">Technology package</span><div class="qFF" data-qff="tech"></div><div class="qSeg" id="qTech"><button type="button" data-q="0">None</button><button type="button" data-q="4">Low</button><button type="button" data-q="8">Med-Low</button><button type="button" data-q="10">Medium</button><button type="button" data-q="12">Med-High</button><button type="button" data-q="14">High</button></div></div>
+    <div class="qField"><span class="lab">Delivery</span><div class="qFF" data-qff="del"></div><div class="qSeg" id="qDel"><button type="button" data-q="ok">All by Spring Year 2</button><button type="button" data-q="some">Some later</button><button type="button" data-q="late">All later</button></div>
+      <div class="qLate" id="qLateBox" hidden>
+        <p class="qAsk" style="margin-top:0">Ask: "If some ships come later, what extra discount applies to those ships?"</p>
+        <div class="qField" id="qOnBox"><label for="qOnN">Ships by Spring Year 2</label><input id="qOnN" type="number" inputmode="numeric" step="1" placeholder="e.g. 6"></div>
+        <div class="qField"><span class="lab">The later ships arrive</span><div class="qSeg" id="qLateW"><button type="button" data-q="u2">Summer Year 2</button><button type="button" data-q="a2">Autumn Year 2</button><button type="button" data-q="w2">Winter Year 2</button><button type="button" data-q="s3">Spring Year 3</button><button type="button" data-q="l3">Later</button></div></div>
+        <div class="qField"><label for="qLateD">Extra discount on the later ships, % off list</label><span class="small muted" style="display:block;margin-bottom:4px">On top of the main price. If the main offer is 16% off and later ships get 3 more, type 3.</span><input id="qLateD" type="text" inputmode="decimal" placeholder="e.g. 3"></div>
+        <p class="qOut" id="qLateOut"></p>
+      </div></div>
+    <div class="qField"><span class="lab">Maintenance</span><div class="qFF" data-qff="maint"></div><div class="qSeg" id="qMP"><button type="button" data-q="bai">From Bent Anchor</button><button type="button" data-q="third">Third party</button></div>
+      <div id="qMBox" style="margin-top:6px"><label for="qM" class="small">$ million a year, per ship. Third-party baseline: 0.60 means $600,000.</label><input id="qM" type="text" inputmode="decimal"></div></div>
+    <div class="qField"><span class="lab">Crew training</span><div class="qFF" data-qff="train"></div><div class="qSeg" id="qTP"><button type="button" data-q="bai">From Bent Anchor</button><button type="button" data-q="third">Third party</button></div>
+      <div id="qTBox" style="margin-top:6px"><label for="qT" class="small">$ million a year, per ship. Third-party baseline: 0.30 means $300,000.</label><input id="qT" type="text" inputmode="decimal"></div></div>
+    <div class="qField"><label for="qDep">Paid on order, % <span class="small muted">(only if mentioned)</span></label><div class="qFF" data-qff="pay"></div><input id="qDep" type="text" inputmode="decimal"></div>
+    <div class="qField"><label for="qNote" id="qNoteL">Anything else they said or asked for</label><input id="qNote" type="text" placeholder="A note on this offer only. It is not carried over."></div>
+    <div class="qOther"><span class="lab" style="display:block;font-weight:700;margin-top:14px">Other terms</span>
+      <div class="qField"><span class="lab">Guarantees and warranties</span><div class="qFF" data-qff="guar"></div></div>
+      <div class="qField"><span class="lab">Future purchases</span><div class="qFF" data-qff="future"></div></div>
+      <div class="qField"><span class="lab">Financing (buy or lease)</span><div class="qFF" data-qff="fin"></div></div>
+      <div class="qField"><span class="lab">Type of vessel (BA-2500)</span><div class="qFF" data-qff="model"></div></div>
+    </div>
+    <div class="qEx" id="qExBox"><h3>Extras: warranties, guarantees, options, sweeteners</h3>
+      <p class="small muted" style="margin:2px 0 6px">These carry over to every offer and appear in the Terms tab. Only <b>Agreed</b> extras with a value change the cost.</p>
+      <div id="qExList"></div>
+      <div class="qExAdd"><div style="grid-column:1/-1"><label for="qExN">Add an extra</label><input id="qExN" list="qExDL" placeholder="e.g. Extended warranty, 3 years"><datalist id="qExDL"></datalist></div>
+        <div><label for="qExV">Value to ShipX, $M <span class="small muted" style="font-weight:400">(minus if it costs us)</span></label><input id="qExV" inputmode="decimal" placeholder="e.g. 0.05"></div>
+        <div><label for="qExU">Unit</label><select id="qExU"><option value="sy">per ship, per year</option><option value="so">per ship, one-off</option><option value="fy">all ships, per year</option><option value="fo">all ships, one-off</option></select></div>
+        <div><button type="button" class="tbtn" id="qExAddB" style="width:100%">Add as Discussing</button></div></div>
+      <p class="small" id="qExMsg" role="status" style="margin:6px 0 0;font-weight:700"></p>
+    </div>
+    </details>
+  </div>
+  <div class="tcard">
+    <h2>4. Check, then send</h2>
+    <p class="qSum" id="qSum"></p>
+    <div class="qOut qVerd" id="qVerd" hidden></div>
+    <button class="tbtn qSend" type="button" id="qSend" disabled>Choose who made the offer</button>
+    <div class="qOptRow" id="qOptRow" hidden><b>Is this one of several packages?</b><p class="small muted" style="margin:2px 0 6px">Save it to compare. It is not sent to the Board, so it does not count as a move.</p><label for="qOptName" class="small" style="display:block;font-weight:700">Package name</label><input id="qOptName" type="text" placeholder="e.g. Package A, or their name for it"><br><button type="button" class="qLink" id="qSaveOpt">Save as a package to compare</button></div>
+    <p class="tmsg" id="qMsg" role="status"></p>
+    <div class="qNext" id="qNext" hidden>Next: <button class="tbtn" type="button" id="qGoBoard" style="margin-left:6px">Open the Board</button> and read Our next move.</div>
+  </div>
+</div></div>
+<div id="paneTerms" hidden><div class="tWrap qWrap">
+  <div class="tcard"><h2>Terms tracker</h2><p>Mark each term as you go, so we don't keep going back to the same questions. <span class="spriv">PRIVATE</span></p>
+    <p class="tHint">✓ Agreed: only when both sides say yes. It locks that term in Enter offer. ✕ Off the table: settled or not possible, so we stop raising it.</p>
+    <div class="tCounts" id="tCounts"></div></div>
+  <div class="tcard"><h2>Discussing now</h2><div class="tList" id="tPlay"></div></div>
+  <div class="tcard"><h2>Not discussed yet</h2><div class="tList" id="tOpen"></div>
+    <div class="tAdd"><input id="tNew" type="text" placeholder="Add a term they raised, e.g. spare parts priority" aria-label="New term"><button class="tbtn" type="button" id="tAddBtn">Add term</button></div></div>
+  <div class="tcard"><details class="tGrp" id="tAgD" open><summary>✓ Agreed (<span id="tAgN">0</span>)</summary><div class="tList" id="tAgreed"></div></details></div>
+  <div class="tcard"><details class="tGrp" id="tOffD"><summary>✕ Off the table (<span id="tOffN">0</span>)</summary><div class="tList" id="tOff"></div></details></div>
+</div></div>
 <div id="paneTeam" hidden><div class="tWrap">
   <div class="tcard">
     <h2>Team numbers</h2>
@@ -817,13 +1135,15 @@ body.safe .pv{display:none!important}
   <div class="tcard">
     <h2>How to use the Desk</h2>
     <p><span class="spriv">PRIVATE</span> Team 3 only. Never show this tool or share its link outside the team.</p>
-    <p style="margin-top:8px"><b>One idea:</b> price every offer in the Calculator, send it to the Board, then read Our next move.</p>
+    <p style="margin-top:8px"><b>One idea:</b> put every offer through <b>Enter offer</b>, send it, then read Our next move on the Board.</p><p style="margin-top:6px">The Calculator, Team numbers and Deliverable 1 are under <b>More tools</b>.</p>
   </div>
   <div class="tcard">
     <h2>What each tab does</h2>
     <table class="hTab">
       <tr><th>Tab</th><th>Use it to</th></tr>
-      <tr><td><b>Calculator</b></td><td>Enter every variable, flexible first. Translate their numbers, add extras, send offers and see the deal sheet.</td></tr>
+      <tr><td><b>Enter offer</b></td><td>Enter every offer here: who, how the price was given, what comes with it, extras. Check the sentence, then send.</td></tr>
+      <tr><td><b>All terms</b></td><td>Under More tools. Every term and extra in one list, with the same statuses as Enter offer.</td></tr>
+      <tr><td><b>Full detail (backup)</b></td><td>Under More tools. The same engine as Enter offer, shown in full. Only for rare cases.</td></tr>
       <tr><td><b>Board</b></td><td>See the ZOPA with every numbered offer, Our next move, our limits, the concession steps and table lines.</td></tr>
       <tr><td><b>Deliverable 1</b></td><td>A draft of the prep plan, using the Team numbers. Copy it into Word or Google Docs, edit, then save as PDF.</td></tr>
       <tr><td><b>Team numbers</b></td><td>Agree the figures once. Update both tabs sends them to the Calculator and Board.</td></tr>
@@ -837,7 +1157,7 @@ body.safe .pv{display:none!important}
     <h2>In the room: repeat these steps</h2>
     <ol class="hSteps">
       <li><b>Hear the offer.</b> Check what it includes. Say: "Let me check that for us."</li>
-      <li><b>Enter it in the Calculator.</b> Choose Their offer or Our offer. For ours, press Fill our next step.</li>
+      <li><b>Enter offer tab.</b> Step 1 who, step 2 how the price was given, step 3 what comes with it, step 4 check the sentence and send. For ours, press Use our next planned step.</li>
       <li><b>Read the checks.</b> Look at the verdict at the top and What to check beside it.</li>
       <li><b>Press Send.</b> The top strip says Testing, not sent, until you do. The Board follows the offer on screen as you test it.</li>
       <li><b>Read Our next move.</b> Share it quietly with the team.</li>
@@ -849,6 +1169,8 @@ body.safe .pv{display:none!important}
     <table class="hTab">
       <tr><th>What happens</th><th>What to do</th></tr>
       <tr><td>They use different terms or units</td><td>Calculator: Translate. Check the assumptions it states.</td></tr>
+      <tr><td>A term is settled or not possible</td><td>Enter offer, step 3: tap Agreed or Off the table on that term. It freezes, and we stop raising it. Tap it again to reopen. Use Notes for what was said.</td></tr>
+      <tr><td>They give one big total</td><td>Enter offer, step 2: One total for all ships. Ask what it includes, then answer the two questions.</td></tr>
       <tr><td>They offer something besides price</td><td>Add an extra box, under the flexible variables. The Add extra button jumps there. Mark it Agreed only when both sides agree.</td></tr>
       <tr><td>We can't put a value on an extra</td><td>Tick Can't value yet. It counts as zero. Take it to a team break.</td></tr>
       <tr><td>They say a term is fixed</td><td>Tick They say fixed on its Calculator box. Read Our next move.</td></tr>
@@ -956,7 +1278,7 @@ const SRC={
  w_svc:{type:'guide',read:'Asking for a bigger discount in return is our idea, not from the brief.',q:[[P2,'Section 6, page 5','can be negotiated as part of the purchase agreement.']]},
  w_future:{type:'guide',read:'The brief suggests this but does not say how it would work. We suggest an option, not a firm commitment.',q:[[P2,'Section 9, page 6','You believe you might be able to achieve a higher discount rate linked to these future purchase contracts, but you are unsure of how this would work in practice.']]},
  w_fund:{type:'guide',read:'Showing funding is our idea. Share the fact of funding, never the briefing.',q:[[P1,'Section 1.2, page 4','financial robustness and level of investment backing are of paramount concern to the shipbuilder.']]},
- terms:{type:'guide',read:'These terms are recorded for Deliverable 2. A guarantee cost is added to the deal total and to every benchmark, spread over 20 years and all ships. The payment split changes no cost, as the briefs give no interest rate.',q:[[P2,'Section 9, page 6','Clients may choose to extend this warranty for an additional fee.'],[P2,'Section 9, page 6','the regular payment schedule calls for the company to pay 20% down and the remainder at the time of delivery.']]},
+ terms:{type:'guide',read:'These terms are recorded for Deliverable 2. A guarantee cost is added to the whole cost and to every benchmark, spread over 20 years and all ships. The payment split changes no cost, as the briefs give no interest rate.',q:[[P2,'Section 9, page 6','Clients may choose to extend this warranty for an additional fee.'],[P2,'Section 9, page 6','the regular payment schedule calls for the company to pay 20% down and the remainder at the time of delivery.']]},
  fuelOther:{type:'guide',label:'fuel and other costs',read:'Nothing here is calculated for you. Fuel saving is the money saved each year, not the fuel bill: 5% of the yearly fuel bill per ship. Neither brief gives a fuel bill, so it starts at 0. Only enter one if Bent Anchor gives evidence your team accepts, such as 5% of a $4M bill = 0.20. It is assumed Global Mariner\'s matching ship saves the same, so the rating does not change. Other cost counts against Global Mariner too, so it never changes the rating.',q:[[P1,'Section 3.3, page 8','reduces fuel output by about 5%'],[P2,'Section 3, page 4','the total cost per year is calculated based on the net purchase price after discounts (divided by its 20-year life) + annual maintenance + training costs + other annualized costs included in the agreement, less annual fuel savings from more efficient designs.']]},
  w_pay:{type:'guide',read:'The brief allows this. The price trade is our idea.',q:[[P2,'Section 9, page 6','the regular payment schedule calls for the company to pay 20% down and the remainder at the time of delivery.']]}
 };
@@ -975,7 +1297,7 @@ const IDS=['b1s','b1w','b1d','b2s','b2w','b2d','b3s','b3w','b3d','b4s','b4w','b4
 const DEF_V={};IDS.forEach(i=>DEF_V[i]=$(i).value);
 const baiM=()=>S.mProv==='bai',baiT=()=>S.tProv==='bai';
 const FIELDS={
- price:{lab:'Ship price',req:1,min:1,max:()=>+S.ship*2,msg:'Too high for one ship. If it covers all ships, tap a button below.',go:'price'},
+ price:{lab:'Ship price',req:1,min:1,max:()=>+S.ship*2,msg:'Too high for one ship. If it is a total, type it in Package price above.',go:'price'},
  count:{lab:'Number of ships',req:1,int:1,min:1,max:()=>40,msg:'Enter a sensible number of ships',go:'count'},
  gmDisc:{lab:'Global Mariner discount',req:1,min:0,max:()=>60,msg:'Enter a percentage from 0 to 60',go:'gmDisc'},
  limit:{lab:'Yearly limit',req:1,min:.1,max:()=>50,msg:'Enter $ million per ship',go:'limit'},
@@ -1036,7 +1358,8 @@ function evaluate(r){const a={},c=[];const add=(go,l,msg)=>c.push({go,l,msg});
   else{a.hull={l:'check',t:'! Check'};const s=extraY-r.fuelSaving;add('t-hull','check','Hull: over 20 years, Bubble-Hull costs more than its fuel saving by '+both(s*r.c*20,r.c)+' (estimate)')}
   $('s-hull').textContent=txt}
  /* price */
- if(r.price>r.list){a.price={l:'check',t:'! Check'};add('t-price','check','Ship price: above list by '+both((r.price-r.list)*r.c,r.c)+', one-off. Did their number include technology?')}
+ if(r.disc>50){a.price={l:'no',t:'✕ Check entry'};add('t-price','no','Ship price: '+r.disc.toFixed(1)+'% off list is very unlikely. Did a total go in the wrong box?')}
+ else if(r.price>r.list){a.price={l:'check',t:'! Check'};add('t-price','check','Ship price: above list by '+both((r.price-r.list)*r.c,r.c)+', one-off. Did their number include technology?')}
  else if(r.disc<25){a.price={l:'check',t:'! Check'};add('t-price','check','Ship price: under 25% off. Costs '+both((r.price-r.list*.75)*r.c,r.c)+' more than 25% off, one-off')}
  else a.price={l:'ok',t:'✓ OK'};
  if(!touched.price&&a.price.l==='ok')a.price={l:'wait',t:'No offer yet'};
@@ -1055,7 +1378,7 @@ function evaluate(r){const a={},c=[];const add=(go,l,msg)=>c.push({go,l,msg});
  const serv=(prov,yrs,cost,third,name,mand,flag,tile,pair,sub,one)=>{
   $(pair).textContent='Over 20 years: '+both(one*r.c,r.c);
   const boxV=parseFloat($(flag).value),gapT=isFinite(boxV)?(third-boxV)*20*r.c:0;
-  if(prov==='third'){$(sub).textContent='Third-party price: '+m(third)+' a year per ship. '+(Math.abs(gapT)<.005?'That equals the Bent Anchor price in the box, so the deal total does not change.':gapT>0?'Costs '+m(gapT)+' more than the Bent Anchor price over 20 years, all ships.':'Saves '+m(-gapT)+' against the Bent Anchor price over 20 years, all ships.')+(isFinite(boxV)?' Bent Anchor loses '+m(boxV*20*r.c)+' of contract revenue.':'');return{l:'ok',t:'✓ OK'}}
+  if(prov==='third'){$(sub).textContent='Third-party price: '+m(third)+' a year per ship. '+(Math.abs(gapT)<.005?'That equals the Bent Anchor price in the box, so the whole cost does not change.':gapT>0?'Costs '+m(gapT)+' more than the Bent Anchor price over 20 years, all ships.':'Saves '+m(-gapT)+' against the Bent Anchor price over 20 years, all ships.')+(isFinite(boxV)?' Bent Anchor loses '+m(boxV*20*r.c)+' of contract revenue.':'');return{l:'ok',t:'✓ OK'}}
   const l=[];if(yrs<20)l.push([mand?'no':'check',name+': '+(mand?'board rule is 20 years':'board wishes for 20 years')+'. Third party covers the last '+(20-yrs)+' years']);
   const over=(cost-third)*yrs*r.c;if(cost>third&&yrs>0)l.push(['check',name+': costs more than third party by '+both(over,r.c)+' over '+yrs+' years']);
   l.forEach(x=>add(tile,x[0],x[1]));
@@ -1085,7 +1408,7 @@ function drawCompare(r,e){
  const g=e.walk-r.total;
  $('evalGap').textContent=(g>=0?'Better than walk-away over 20 years by ':'Worse than walk-away over 20 years by ')+both(Math.abs(g),r.c);
  $('vMax').textContent=e.max>0?'Highest one-off ship price before walk-away: '+m(e.max)+' per ship ('+((1-e.max/r.list)*100).toFixed(1)+'% off), with these services.':'No ship price beats the walk-away with these services.';
- $('zoneNote').textContent='Ratings compare against the same hull. Use the deal totals to compare hulls. Stretch and Target use the same hull and technology, and services from Team numbers. Any guarantee or other cost is added to Stretch, Target and the walk-away too, so it does not change the rating by itself.'+(e.walk<e.target?' At this Global Mariner discount, the walk-away is below Target, so there is no Acceptable zone.':'')}
+ $('zoneNote').textContent='Ratings compare against the same hull. Use the whole cost to compare hulls. Stretch and Target use the same hull and technology, and services from Team numbers. Any guarantee or other cost is added to Stretch, Target and the walk-away too, so it does not change the rating by itself.'+(e.walk<e.target?' At this Global Mariner discount, the walk-away is below Target, so there is no Acceptable zone.':'')}
 function drawSheet(r){
  const rows=r?(()=>{const d=$('deposit').value===''?20:v('deposit'),md=baiM()&&r.my>0,td=baiT()&&r.ty>0;
   const sv=r.worth,ex=r.tech*r.c+r.war,pur=r.price*r.c,tot=pur+sv+ex;
@@ -1107,7 +1430,7 @@ function drawSheet(r){
   ['','+ Other yearly costs, 20 years','',num(r.oth*r.c*20)],
   ['','− Fuel saving, 20 years','',num(r.fuelT)],
   ['','− Agreed extras, 20 years','',num(r.ag)],
-  ['b','Deal total, 20 years','',num(r.total)]]})():[];
+  ['b','Whole cost to ShipX, 20 years','',num(r.total)]]})():[];
  $('sheet').innerHTML=rows.length?rows.map((x,i)=>{const t=i?'td':'th',b=x[0]==='b'?'<b>':'',e=x[0]==='b'?'</b>':'';return '<tr><'+t+'>'+b+x[1]+e+'</'+t+'><'+t+'>'+x[2]+'</'+t+'><'+t+' class="r">'+b+x[3]+e+'</'+t+'></tr>'}).join(''):'<tr><td>Fix the boxes above to see this.</td></tr>'}
 function drawBreakdown(r){
  if(!r){$('breakdown').innerHTML='<tr><td>Fix the boxes above to see this.</td></tr>';return}
@@ -1129,7 +1452,7 @@ function calc(){
   Object.values(map).forEach(t=>{const e=$(t);e.className='tile'+(e.classList.contains('wide')?' wide':'')+' wait';e.querySelector('.badge').textContent='-'});
   errs.forEach(x=>{const t=TILE_OF[x.id];if(t)$(t).querySelector('.badge').textContent='Enter a figure'});
   ['p-hull','p-price','p-tech','p-maint','p-train','s-hull','s-maint','s-train','s-fuel','evalFuel'].forEach(i=>$(i).textContent='');
-  $('alsoCounted').hidden=true;drawWins(null);drawSheet(null);drawBreakdown(null);saveLive();return null}
+  $('alsoCounted').hidden=true;pkgSync(null);drawWins(null);drawSheet(null);drawBreakdown(null);saveLive();return null}
  const r=work(),{a,c}=evaluate(r),e=deal(r);
  if(e.zone==='walk')c.unshift({go:'evalCard',l:'no',msg:'Deal: worse than walk-away over 20 years by '+both(r.total-e.walk,r.c)});
  Object.keys(a).forEach(k=>{const t=$(map[k]);t.className='tile'+(t.classList.contains('wide')?' wide':'')+' '+a[k].l;t.querySelector('.badge').textContent=a[k].t});
@@ -1147,24 +1470,56 @@ function calc(){
  $('s-fuel').textContent=r.bub?'Fuel saving: not automatic. It is 5% of the yearly fuel bill, and no bill is in the briefs. Leave at 0 unless Bent Anchor gives evidence. For example, a $4M bill gives 0.20.':'Not applied: base hull selected. Your figure is kept for Bubble-Hull.';
  const lim=v('limit');$('limitNote').textContent=(lim<8.5?'Team':'Board')+' limit check: '+m(r.annual)+' against '+m(lim)+' a year per ship'+(r.annual<=lim?': passed.':': over.')+' Confirm the $8.5M figure with Professor Marcos.';
  $('concerns').innerHTML=c.length?c.map(x=>'<button class="concern '+x.l+'" data-go="'+x.go+'">'+(x.l==='no'?'✕ ':'! ')+esc(x.msg)+'</button>').join(''):(touched.price?'<div class="allclear">✓ Nothing to check on this offer</div>':'<div class="allclear wait">Nothing yet. Warnings appear here.</div>');
- drawWins(r);drawSheet(r);drawBreakdown(r);saveLive();Desk.calcDrawn&&Desk.calcDrawn(r,touched.price,{hull:r.bub?'BHO':'BSO',tech:[0,4,8,10,12,14].indexOf(r.tech),ships:r.c,m:r.m1/20,t:r.t1/20,del:{ok:'all',some:'some',late:'late'}[S.delivery],ex:r.oth+r.war/20/r.c-r.fuelSaving,fadv:r.fuelSaving-e.gmFuel,mShort:baiM()&&r.my<20,tShort:baiT()&&r.ty<20,onT:$('dates').value&&splitOn?splitOn.onN:null});Desk.calcTrSame&&Desk.calcTrSame(r);return{r,e,nos,chk}}
+ pkgSync(r);drawWins(r);drawSheet(r);drawBreakdown(r);saveLive();Desk.calcDrawn&&Desk.calcDrawn(r,touched.price,{hull:r.bub?'BHO':'BSO',tech:[0,4,8,10,12,14].indexOf(r.tech),ships:r.c,m:r.m1/20,t:r.t1/20,del:{ok:'all',some:'some',late:'late'}[S.delivery],ex:r.oth+r.war/20/r.c-r.fuelSaving,fadv:r.fuelSaving-e.gmFuel,mShort:baiM()&&r.my<20,tShort:baiT()&&r.ty<20,onT:$('dates').value&&splitOn?splitOn.onN:null});Desk.calcTrSame&&Desk.calcTrSame(r);return{r,e,nos,chk}}
+
+/* Package price box: the sliders only write into the Ship price box (and service boxes), then run calc() as typing would. */
+function pkgOf(price){const tech=+S.tech,c=v('count'),my=baiM()?v('mYears'):0,ty=baiT()?v('tYears'):0;
+ return (price+tech)*c+(my*v('mCost')+ty*v('tCost'))*c+v('wCost')}
+function pkgPriceFrom(P){const c=v('count');if(!(c>0))return null;return P/c-(pkgOf(0)/c)}
+let pkgSrc=null;document.addEventListener('input',e=>{pkgSrc=e.target;setTimeout(()=>{pkgSrc=null},0)},true);
+const pkgHands=el=>el===pkgSrc||document.activeElement===el;
+function pkgSync(r){const list=+S.ship,pkg=$('pkgN'),pr=$('pkgR'),sr=$('priceR');
+ const lockP=Desk.isLocked&&Desk.isLocked('price');
+ if(!pkgHands($('pkgM')))$('pkgM').checked=baiM();if(!pkgHands($('pkgT')))$('pkgT').checked=baiT();
+ $('pkgM').disabled=lockP||(Desk.isLocked&&Desk.isLocked('maint'));$('pkgT').disabled=lockP||(Desk.isLocked&&Desk.isLocked('train'));
+ sr.min=+(list*.5).toFixed(2);sr.max=list;
+ const yl=(id,l)=>{$(l).textContent=$(id).value||'?'};yl('mYears','mYearsL');yl('tYears','tYearsL');
+ ['mCost','tCost'].forEach(id=>{const e=$(id+'R');if(!pkgHands(e))e.value=v(id)});
+ if(!r){if(!pkgHands(pkg))pkg.value='';$('pkgIn').textContent='Fill in the boxes marked Enter a figure to see the package price.';return}
+ const P=r.paid,lo=pkgOf(list*.5),hi=pkgOf(list);
+ pr.min=Math.floor(lo);pr.max=Math.ceil(Math.max(hi,P));
+ if(!pkgHands(pkg))pkg.value=P.toFixed(2);
+ if(!pkgHands(pr))pr.value=P;
+ if(!pkgHands(sr))sr.value=r.price;
+ const svc=(on,y,name)=>on?name+' from Bent Anchor ('+y+' years)':'no '+name.toLowerCase()+' (third party)';
+ $('pkgIn').textContent='Covers '+r.c+(r.c===1?' ship':' ships')+', '+({0:'no',4:'Low',8:'Med-Low',10:'Medium',12:'Med-High',14:'High'}[S.tech]||'')+' technology, '+svc(baiM(),r.my,'Maintenance').replace(/^M/,'m')+', '+svc(baiT(),r.ty,'Training').replace(/^T/,'t')+(r.war?', and the guarantee':'')+'. Discount off list: '+r.disc.toFixed(2)+'%.'}
+function pkgSet(P){if(Desk.isLocked&&Desk.isLocked('price'))return;const p=pkgPriceFrom(P);if(p===null||!isFinite(p))return;
+ $('price').value=+p.toFixed(4);touched.price=true;$('convMsg').hidden=true;calc();pkgWarnShow()}
+function pkgWarnShow(){const c=v('count'),my=baiM()?v('mYears'):0,ty=baiT()?v('tYears'):0,sv=(my*v('mCost')+ty*v('tCost'))*c;
+ if(!(sv>0)){$('pkgWarn').hidden=true;return}
+ $('pkgWarnT').textContent='Check: this box takes off '+m(sv)+' for 20 years of Bent Anchor services before working out the ship price. Did their total include services? If not, use Translate.';$('pkgWarn').hidden=false}
 const TECH={0:'None',4:'Low',8:'Med-Low',10:'Medium',12:'Med-High',14:'High'},DEL={ok:'All by Spring Year 2',some:'Some later',late:'All later'};
 const TECHL={0:'None',4:'Low',8:'Medium-Low',10:'Medium',12:'Medium-High',14:'High'};
 function draw(){
  $('logEmpty').hidden=!!offers.length;$('logBtns').hidden=!offers.length;
  $('log').innerHTML=offers.map((o,i)=>{let ch='First '+o.who+' offer';for(let j=i-1;j>=0;j--)if(offers[j].who===o.who){const d=o.total-offers[j].total,p=o.price-offers[j].price;
-   ch=(d>0?'Deal total up ':d<0?'Deal total down ':'No change in deal total')+(d?m(Math.abs(d)):'')+' on last '+o.who+' offer'+(p?' (ship price '+(p>0?'up ':'down ')+m(Math.abs(p))+')':'');if(o.hull!==offers[j].hull)ch+='. Hull changed';break}
+   ch=(d>0?'Whole cost up ':d<0?'Whole cost down ':'No change in whole cost')+(d?m(Math.abs(d)):'')+' on last '+o.who+' offer'+(p?' (ship price '+(p>0?'up ':'down ')+m(Math.abs(p))+')':'');if(o.hull!==offers[j].hull)ch+='. Hull changed';break}
   const st=(o.nos?'✕ '+o.nos+' No':'')+(o.nos&&o.chk?', ':'')+(o.chk?'! '+o.chk+' Check':'')||'✓ OK';
-  return '<div class="offer"><div class="offerHead"><span class="pill '+(o.who==='ShipX'?'blue':'orange')+'">'+(i+1)+'. '+o.who+'</span><b>Deal total, 20 years: '+m(o.total)+'</b></div>'+
+  return '<div class="offer"><div class="offerHead"><span class="pill '+(o.who==='ShipX'?'blue':'orange')+'">'+(i+1)+'. '+o.who+'</span><b>Whole cost to ShipX, 20 years: '+m(o.total)+'</b></div>'+
   '<p>Yearly cost per ship: '+m(o.annual)+'. Ship price, one-off: '+m(o.price)+' per ship.</p><p>'+esc(o.hull)+'. '+esc(o.tech)+' technology.</p><p>Maintenance: '+esc(o.ms)+'. Training: '+esc(o.ts)+'.</p><p>Delivery: '+esc(o.del)+'.</p>'+
   (o.more?'<p>'+esc(o.more)+'</p>':'')+'<p><b>'+esc(o.zone)+'.</b> Status: '+st+'</p><p><b>'+esc(ch)+'</b></p></div>'}).join('')}
-function save(who){const R=calc();if(!R)return;const{r,e,nos,chk}=R;
+let bigKey='';
+function save(who,force){const R=calc();if(!R)return;const{r,e,nos,chk}=R;
+ if(!force&&(r.disc>50||r.disc<0)&&bigKey!==keyOf(r)+who){bigKey=keyOf(r)+who;$('saveMsg').className='saved bad';$('saveMsg').textContent='✕ Not sent. '+(r.disc<0?'This is above the list price':r.disc.toFixed(2)+'% off list looks like an entry error')+'. Check the box you used. If it is really correct, press Send again.';return}
+ bigKey='';$('saveMsg').className='saved';$('pkgWarn').hidden=true;
  const sv=(p,y,c)=>p==='third'?'third party':'Bent Anchor '+m(c)+' a year per ship, '+y+' years';
  const more=[$('deposit').value!==''?v('deposit')+'% on order':'',$('wYears').value||$('wCost').value?'Guarantee: '+($('wYears').value||'?')+' years, '+m(v('wCost'))+' for all ships':'',$('dates').value&&'Dates: '+$('dates').value,$('future').value&&'Future: '+$('future').value,$('items').value&&'Other: '+$('items').value].filter(Boolean).join('. ');
  offers.push({who,hull:r.bub?'Bubble-Hull':'Base hull',price:r.price,tech:TECH[S.tech],ms:sv(S.mProv,r.my,r.mc),ts:sv(S.tProv,r.ty,r.tc),del:$('dates').value||DEL[S.delivery],total:r.total,annual:r.annual,zone:ZONE[e.zone],nos,chk,more});
- store();draw();$('saveMsg').textContent='✓ Offer '+offers.length+', '+who+', sent to Board. Deal total, 20 years: '+m(r.total)+'.';
+ store();draw();$('saveMsg').textContent='✓ Offer '+offers.length+', '+who+', sent to Board. Whole cost to ShipX, 20 years: '+m(r.total)+'.';
  lastKey=keyOf(r);const ask=$('saveAsk').value.trim();$('saveAsk').value='';
- Desk.send({w:who==='ShipX'?'us':'them',d:+r.disc.toFixed(2),p:r.price,ds:$('dates').value.trim(),a:ask,deal:{hull:r.bub?'BHO':'BSO',tech:[0,4,8,10,12,14].indexOf(r.tech),ships:r.c,m:r.m1/20,t:r.t1/20,del:{ok:'all',some:'some',late:'late'}[S.delivery]}});Desk.whoSet(who==='ShipX'?'them':'us')}
+ const exs=Desk.varsList?Desk.varsList().filter(v=>v.s==='play'||v.s==='agreed').map(v=>v.n+(v.s==='agreed'?' (agreed)':'')).join(', '):'';
+ const dts=$('dates').value.trim(),sum=r.c+' '+(r.bub?'Bubble-Hull':'base hull')+' ships at '+m(r.price)+' a ship'+(dts?' on average':'')+' ('+r.disc.toFixed(2)+'% off list), '+(TECH[S.tech]==='None'?'no technology':TECH[S.tech]+' technology')+'. Delivery: '+(dts||DEL[S.delivery])+'. Maintenance: '+sv(S.mProv,r.my,r.mc)+'. Training: '+sv(S.tProv,r.ty,r.tc)+'.'+(exs?' Extras: '+exs+'.':'')+(ask?(who==='ShipX'?' We ask for: ':' They ask for: ')+ask+'.':'');
+ Desk.send({s:sum,w:who==='ShipX'?'us':'them',d:+r.disc.toFixed(2),p:r.price,ds:$('dates').value.trim(),a:ask,deal:{hull:r.bub?'BHO':'BSO',tech:[0,4,8,10,12,14].indexOf(r.tech),ships:r.c,m:r.m1/20,t:r.t1/20,del:{ok:'all',some:'some',late:'late'}[S.delivery]}});Desk.whoSet(null);$('saveMsg').textContent+=' Next: choose whose offer comes next.'}
 function chips(){document.querySelectorAll('.chips').forEach(g=>g.querySelectorAll('.chip').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===S[g.dataset.key])))}
 function note(txt,warn,canUndo){$('convMsg').hidden=false;$('convMsg').className='convMsg'+(warn?' warn':'');$('convTxt').textContent=txt;$('convUndo').hidden=!canUndo}
 document.querySelectorAll('.chips').forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
@@ -1173,14 +1528,14 @@ document.querySelectorAll('.chips').forEach(g=>g.addEventListener('click',e=>{co
   if(!problem('price')){const n=+(v('price')/was*now).toFixed(2);convPrev=null;$('price').value=n;note('Same discount kept: '+m(n)+'. Type their figure if different.',true,false)}
   S.ship=b.dataset.v}
  else S[k]=b.dataset.v;chips();calc()}));
-document.querySelectorAll('#paneCalc input').forEach(e=>e.addEventListener('input',()=>{if(e.id in touched)touched[e.id]=true;if(e.id==='price')$('convMsg').hidden=true;calc()}));
+document.querySelectorAll('#paneCalc input').forEach(e=>e.addEventListener('input',()=>{if(e.id in touched)touched[e.id]=true;if(e.id==='price'){$('convMsg').hidden=true;$('pkgWarn').hidden=true}calc()}));
 document.querySelector('.conv').addEventListener('click',e=>{const b=e.target.closest('[data-conv]');if(!b)return;
  const x=v('price'),t=+S.tech,c=v('count'),k=b.dataset.conv;
  if(!x||(k!=='tech'&&!c)){note('Type their number in the box first.',true,false);return}
  const n=+(k==='tech'?x-t:k==='all'?x/c:x/c-t).toFixed(2);
  const what=k==='tech'?'with technology':k==='all'?'for all '+c+' ships':'for all '+c+' ships with technology';
  if(n<=0){note(m(x)+' '+what+' leaves no ship price. Check the number, ships and technology.',true,false);return}
- convPrev={val:$('price').value,was:touched.price};$('price').value=n;touched.price=true;
+ convPrev={val:$('price').value,was:touched.price};$('price').value=n;touched.price=true;$('pkgWarn').hidden=true;
  note('✓ '+m(x)+' '+what+' is a ship price of '+m(n),false,true);calc()});
 $('convUndo').onclick=()=>{if(!convPrev)return;$('price').value=convPrev.val;touched.price=convPrev.was;convPrev=null;$('convMsg').hidden=true;calc()};
 $('wins').addEventListener('click',e=>{const b=e.target.closest('[data-w]');if(!b)return;agreed[b.dataset.w]=!agreed[b.dataset.w];store();calc()});
@@ -1201,12 +1556,12 @@ Desk.calcPop=()=>{offers.pop();store();draw();$('saveMsg').textContent=''};
 Desk.calcClear=()=>{offers=[];store();draw();$('saveMsg').textContent=''};
 Desk.calcFill=(d,a)=>{if(Desk.isLocked&&Desk.isLocked('price')){$('saveMsg').textContent='Ship price is Agreed and locked. Untick Agreed to change it.';return}$('price').value=+(+S.ship*(1-d/100)).toFixed(2);touched.price=true;$('saveAsk').value=a||'';$('convMsg').hidden=true;segShow('sendP');whoSet('us')};
 Desk.calcRun=()=>calc();
-Desk.calcResetAll=()=>{IDS.forEach(i=>$(i).value=DEF_V[i]);splitOn=null;S={...DEF_S};touched={...DEF_T};convPrev=null;agreed={};lastKey='';$('convMsg').hidden=true;$('saveMsg').textContent='';$('saveAsk').value='';applyStart();applyLimits();Desk.whoSet('them');segShow('sendP');chips();store();calc();splitDraw()};
-const segShow=id=>{if(id==='qaPanel'){$('qaPanel').scrollIntoView({block:'start'});$('qaItem').focus();return}['sendP','trPanel'].forEach(k=>$(k).hidden=k!==id);document.querySelectorAll('.segTabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.seg===id))};
+Desk.calcResetAll=()=>{IDS.forEach(i=>$(i).value=DEF_V[i]);try{localStorage.removeItem('shipxDeskQ')}catch(e){}QKEEP.forEach(k=>$(k).value='');OPTS=[];optStore();optDraw();$('pkgWarn').hidden=true;splitOn=null;S={...DEF_S};touched={...DEF_T};convPrev=null;agreed={};lastKey='';$('convMsg').hidden=true;$('saveMsg').textContent='';$('saveAsk').value='';applyStart();applyLimits();Desk.whoSet(null);segShow('sendP');chips();store();calc();splitDraw()};
+const segShow=id=>{if(id==='qaPanel'){$('dTerms').open=true;$('qaPanel').scrollIntoView({block:'start'});$('qaItem').focus();return}['sendP','trPanel'].forEach(k=>$(k).hidden=k!==id);document.querySelectorAll('.segTabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.seg===id))};
 document.querySelector('.segTabs').addEventListener('click',e=>{const b=e.target.closest('[data-seg]');if(b)segShow(b.dataset.seg)});
 Desk.calcSeg=segShow;
-let whoNow='them';
-const whoSet=w=>{whoNow=w;document.querySelectorAll('.whoSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.who===w));$('saveX').hidden=w!=='us';$('saveB').hidden=w!=='them';$('fillRow').hidden=w!=='us';$('saveAskL').textContent=w==='us'?'What we ask in return':'What they asked for';calc()};
+let whoNow=null;
+const whoSet=w=>{whoNow=w;document.querySelectorAll('.whoSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.who===w));$('saveX').hidden=w!=='us';$('saveB').hidden=w!=='them';$('fillRow').hidden=w!=='us';$('whoAsk').hidden=!!w;$('saveAskL').textContent=w==='us'?'What we ask in return':'What they asked for';calc()};
 Desk.who=()=>whoNow;Desk.whoSet=whoSet;
 document.querySelector('.whoSeg').addEventListener('click',e=>{const b=e.target.closest('[data-who]');if(b)whoSet(b.dataset.who)});
 const LEASE=.0055;
@@ -1255,9 +1610,24 @@ function trRun(){const mode=TRF.find(i=>i[0]===$('trMode').value),out=$('trOut')
 function trSame(r){if(!r){$('trSame').innerHTML='';return}const c=r.c,net=r.price,row=(a,b,d)=>'<tr><td>'+a+'</td><td class="r">'+b+'</td><td class="r">'+d+'</td></tr>';
  $('trSame').innerHTML='<tr><th>Term</th><th class="r">Per ship</th><th class="r">All '+c+'</th></tr>'+row('Ship price',m(net),m(net*c))+row('With technology',m(net+r.tech),m((net+r.tech)*c))+row('Discount off list',r.disc.toFixed(2)+'%','same')+row('Price per TEU','$'+Math.round(net*1e6/2500).toLocaleString('en-GB'),'same')+row('Depreciation a year',m(net/20),m(net/20*c))+row('Monthly lease at 0.55%',m(net*LEASE),m(net*LEASE*c))+row('Yearly cost',m(r.annual),m(r.annual*c))+row('Whole cost, 20 years',m(r.total/c),m(r.total))}
 $('trMode').onchange=()=>{trRun()};$('trVal').addEventListener('input',trRun);
-$('trUse').onclick=()=>{if(!trNow)return;const id=trNow.t==='p'?'price':trNow.t;if(Desk.isLocked({price:'price',mCost:'maint',tCost:'train'}[id])){$('trOut').textContent='That box is Agreed and locked. Untick Agreed to change it.';return}$(id).value=trNow.y;touched[id]=true;$('trVal').value='';$('trOut').textContent='✓ Figure added. Check the offer above.';$('trUse').hidden=true;trNow=null;calc()};
+$('trUse').onclick=()=>{if(!trNow)return;const id=trNow.t==='p'?'price':trNow.t;if(Desk.isLocked({price:'price',mCost:'maint',tCost:'train'}[id])){$('trOut').textContent='That box is Agreed and locked. Untick Agreed to change it.';return}$(id).value=trNow.y;touched[id]=true;$('trVal').value='';$('pkgWarn').hidden=true;$('trOut').textContent='✓ Figure added. Check the offer above.';$('trUse').hidden=true;trNow=null;calc();segShow('sendP');$('saveMsg').className='saved';$('saveMsg').textContent='✓ Translated figure added. Check whose offer it is, then send.'};
 Desk.calcTrSame=r=>trSame(r);
 
+
+/* Package box events */
+$('pkgN').addEventListener('input',e=>{const P=parseFloat(e.target.value);if(isFinite(P)&&P>0)pkgSet(P)});
+$('pkgN').addEventListener('change',()=>calc());
+$('pkgToTr').onclick=()=>{$('pkgWarn').hidden=true;segShow('trPanel');$('trMode').value='fleetT';trRun();$('trPanel').scrollIntoView({block:'start'});$('trVal').focus()};$('pkgN').addEventListener('blur',()=>setTimeout(calc,0));
+$('pkgR').addEventListener('input',e=>pkgSet(+e.target.value));
+$('pkgR').addEventListener('change',()=>calc());
+$('priceR').addEventListener('input',e=>{if(Desk.isLocked&&Desk.isLocked('price'))return;$('price').value=+(+e.target.value).toFixed(2);touched.price=true;$('convMsg').hidden=true;calc()});
+['mCost','tCost'].forEach(id=>$(id+'R').addEventListener('input',e=>{$(id).value=+(+e.target.value).toFixed(2);touched[id]=true;calc()}));
+[['pkgM','mProv','maint'],['pkgT','tProv','train']].forEach(([id,k,lk])=>$(id).addEventListener('change',e=>{
+ if(Desk.isLocked&&(Desk.isLocked(lk)||Desk.isLocked('price'))){calc();return}
+ const P=parseFloat($('pkgN').value);S[k]=e.target.checked?'bai':'third';chips();
+ if(isFinite(P)&&P>0){const p=pkgPriceFrom(P);if(p!==null&&p>0){$('price').value=+p.toFixed(4);touched.price=true}}
+ calc();note(e.target.checked?(k==='mProv'?'Maintenance':'Training')+' now from Bent Anchor, inside the package. Package price kept, so the ship price changed.':(k==='mProv'?'Maintenance':'Training')+' now from a third party, outside the package. Package price kept, so the ship price changed.',true,false)}));
+$('moreFig').addEventListener('click',e=>{const on=document.body.classList.toggle('moreFig');e.currentTarget.setAttribute('aria-expanded',on);e.currentTarget.textContent=on?'Fewer figures':'More figures'});
 $('fillNext').onclick=()=>Desk.fillNext();
 const SW=[['b4','Before Spring Year 2'],['s2','Spring Year 2'],['u2','Summer Year 2'],['a2','Autumn Year 2'],['w2','Winter Year 2'],['s3','Spring Year 3'],['l3','Later']];
 const swName=k=>(SW.find(x=>x[0]===k)||[,''])[1];
@@ -1278,8 +1648,178 @@ $('splitBox').addEventListener('input',()=>{splitDraw();saveLive()});
 $('splitUse').onclick=()=>{if(!splitOn)return;if(Desk.isLocked('price')){$('splitOut').textContent='Ship price is Agreed and locked. Untick Agreed to use this split.';return}const s=splitOn;$('price').value=+s.avg.toFixed(4);touched.price=true;S.delivery=s.onN>=s.tot?'ok':s.onN>0?'some':'late';$('dates').value=s.rows.map(r=>r.n+' in '+swName(r.w)+' at '+r.d+'%').join('; ');$('convMsg').hidden=true;chips();calc();$('splitOut').textContent='✓ Split used. Ship price and delivery are updated. '+$('splitOut').textContent.replace(' Press Use this split to update the offer.','')};
 $('splitClear').onclick=()=>{for(let i=1;i<=4;i++){$('b'+i+'s').value='';$('b'+i+'d').value='';$('b'+i+'w').value='s2'}$('dates').value='';S.delivery='ok';splitOn=null;chips();calc();splitDraw();$('splitOut').textContent='Split cleared. The ship price stays until you change it.'};
 
+
+/* ---------- Enter offer: one simple screen that writes into the Calculator, then sends ---------- */
+const Q={who:null,mode:null,inc:{T:false,M:false,Tr:false},incDone:false,incNone:false,hull:'40',tech:'10',del:'ok',mp:'bai',tp:'bai',lateW:'s3'};let qBig='';
+const qn=id=>{const x=parseFloat(String($(id).value).replace(/[$£€,\s%]/g,''));return isFinite(x)?x:NaN};
+const QKEY={qWho:'who',qMode:'mode',qTech2:'tech',qHull:'hull',qTech:'tech',qDel:'del',qMP:'mp',qTP:'tp',qLateW:'lateW'};
+const QDEL={ok:'all by Spring Year 2',some:'some ships after Spring Year 2',late:'all after Spring Year 2'};
+function qNumber(){let t=String($('qNum').value).trim().toLowerCase().replace(/[$£€,\s%]/g,'');if(!t)return null;let k=1;
+ if(/(bn|b|billion)$/.test(t))k=1000;else if(/(m|mn|million)$/.test(t))k=1;
+ let x=parseFloat(t);if(!isFinite(x))return NaN;x*=k;if(Q.mode!=='pct'&&x>=1e5)x/=1e6;return x}
+function qPrice(){const x=qNumber();if(x===null)return null;if(!isFinite(x))return NaN;const c=qn('qShips'),tech=+Q.tech,list=+Q.hull;
+ const svc=((Q.mp==='bai'?(qn('qM')||0):0)+(Q.tp==='bai'?(qn('qT')||0):0))*20;
+ if(Q.mode==='ship')return x;if(Q.mode==='shipT')return x-tech;if(Q.mode==='pct')return list*(1-x/100);
+ if(Q.mode==='total'){if(!Q.incDone)return undefined;if(!(c>0))return NaN;if((Q.inc.M&&!isFinite(qn('qM')))||(Q.inc.Tr&&!isFinite(qn('qT'))))return 'svc';return x/c-(Q.inc.T?tech:0)-(Q.inc.M?qn('qM')*20:0)-(Q.inc.Tr?qn('qT')*20:0)}return null}
+function qLate(p,list,c){if(Q.del==='ok')return{need:false};
+ const onN=Q.del==='late'?0:qn('qOnN'),lateN=c-onN,raw=$('qLateD').value.trim(),D=raw===''?0:qn('qLateD'),when=swName(Q.lateW);
+ if(Q.del==='some'&&!(Number.isInteger(onN)&&onN>0&&onN<c))return{need:true,ok:false,msg:'Enter how many ships arrive by Spring Year 2 (between 1 and '+(c-1)+').'};
+ if(!isFinite(D)||D<0)return{need:true,ok:false,msg:'Extra discount: type a number, e.g. 3'};
+ const lp=p-list*D/100,avg=(onN*p+lateN*lp)/c;
+ return{need:true,ok:lp>0,onN,lateN,D,lp,avg,when,noD:!(D>0),low:Q.del==='some'&&onN<T.minOn,
+  dates:(onN?onN+' in Spring Year 2 at '+((1-p/list)*100).toFixed(2)+'%; ':'')+lateN+' in '+when+' at '+((1-lp/list)*100).toFixed(2)+'%'}}
+const QSRC={price:'price',ships:'ships',hull:'hull',tech:'tech',del:'w_delivery',maint:'maint',train:'train',pay:'terms',guar:'terms',future:'w_future',fin:'lease'};
+function qFF(){if(!Desk.ffInfo)return;document.querySelectorAll('#paneQuick .qFF').forEach(el=>{const k=el.dataset.qff,f=Desk.ffInfo(k);if(!f)return;
+ if(!el.dataset.built){el.innerHTML='<span class="ffTag" data-t></span><span class="qSt" role="group" aria-label="Status">'+[['play','Discussing'],['agreed','Agreed'],['off','Off the table']].map(x=>'<button type="button" data-qst="'+x[0]+'" data-k="'+k+'">'+x[1]+'</button>').join('')+'</span><button type="button" class="qNotesB" data-qnotes="'+k+'">Notes</button>'+(QSRC[k]?srcHTML(QSRC[k]):'')+'<span class="small muted" data-x style="flex-basis:100%"></span><div class="qNotes" data-qnb="'+k+'" hidden><label>Their position<input data-qn="their" data-k="'+k+'"></label><label>Our position<input data-qn="our" data-k="'+k+'"></label><label class="wide">What was said, so we don\'t ask again<input data-qn="note" data-k="'+k+'"></label></div>';el.dataset.built=1}
+ const tm=Desk.termGet?Desk.termGet(k):{st:'open'},st=f.lk?'agreed':tm.st,frz=st==='agreed'||st==='off';
+ const t=el.querySelector('[data-t]');t.className='ffTag ff-'+(f.on&&st!=='off'?'fixed':f.us);t.textContent=f.on&&st!=='off'?'● Fixed for them':f.usL+' for us';
+ el.querySelectorAll('[data-qst]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.qst===st));
+ el.querySelectorAll('[data-qn]').forEach(i=>{if(document.activeElement!==i)i.value=tm[i.dataset.qn]||''});
+ const nb=el.querySelector('[data-qnotes]');nb.textContent=(tm.their||tm.our||tm.note)?'Notes ✎':'Notes';
+ el.querySelector('[data-x]').textContent=st==='agreed'?'Frozen. Tap Agreed again to reopen it.':st==='off'?'Frozen. Tap Off the table again to reopen it.':'';
+ (QCTL[k]||[]).forEach(id=>{const c=$(id);if(!c)return;c.classList.toggle('locked',frz);(c.matches('input')?[c]:c.querySelectorAll('button,input')).forEach(x=>x.disabled=frz)})})}
+const QCTL={ships:['qShips'],hull:['qHull'],tech:['qTech','qTech2'],del:['qDel','qLateBox'],maint:['qMP','qM','qM2'],train:['qTP','qT','qT2'],pay:['qDep'],price:['qMode','qNum','qTotBox']};
+Desk.quickFF=qFF;
+function qApply(st){S.ship=Q.hull;S.tech=Q.tech;S.delivery=Q.del;S.mProv=Q.mp;S.tProv=Q.tp;$('count').value=qn('qShips');
+ if(Q.mp==='bai'){$('mCost').value=qn('qM');touched.mCost=true}if(Q.tp==='bai'){$('tCost').value=qn('qT');touched.tCost=true}
+ if($('qDep').value.trim()&&isFinite(qn('qDep')))$('deposit').value=qn('qDep');
+ const sendP=st.L&&st.L.need?st.L.avg:st.p;
+ if(st.L&&st.L.need){$('dates').value=st.L.dates;splitOn={avg:st.L.avg,onN:st.L.onN,tot:st.L.onN+st.L.lateN,rows:[]}}else{$('dates').value='';splitOn=null}
+ $('price').value=+sendP.toFixed(4);touched.price=true;$('convMsg').hidden=true;$('pkgWarn').hidden=true;chips();calc();return sendP}
+function qVerdict(st,ready){const box=$('qVerd');if(!ready||(Desk.isLocked&&Desk.isLocked('price'))){box.hidden=true;return}
+ if(Q.who&&whoNow!==Q.who){whoNow=Q.who}$('saveAsk').value=$('qNote').value.trim();qApply(st);const bc=$('bar').className,cls=/\bno\b/.test(bc)?'bad':/\bok\b/.test(bc)?'good':'warn';
+ const cs=[...document.querySelectorAll('#calcChecks .gn')].map(b=>b.textContent).filter(t=>!/^! Not updated yet/.test(t)).concat([...document.querySelectorAll('#concerns .concern')].map(b=>b.textContent)).slice(0,5);
+ box.className='qOut qVerd '+cls;box.hidden=false;
+ box.innerHTML='For ShipX: '+esc($('verdict').textContent)+'. Yearly cost per ship '+esc($('sShipYear').textContent)+'. Whole cost, 20 years: '+esc($('sAll20').textContent)+'.'+(cs.length?'<ul>'+cs.map(c=>'<li>'+esc(c)+'</li>').join('')+'</ul>':'')}
+function qWork(p){const x=qNumber(),c=qn('qShips'),tech=+Q.tech,tn=TECH[Q.tech],list=+Q.hull;
+ const svc=((Q.mp==='bai'?(qn('qM')||0):0)+(Q.tp==='bai'?(qn('qT')||0):0))*20;
+ if(Q.mode==='shipT')return 'Working: '+m(x)+' − '+m(tech)+' '+tn+' technology ';
+ if(Q.mode==='pct')return 'Working: '+m(list)+' list × (100% − '+x+'%) ';
+ if(Q.mode==='total'&&!(Q.inc.T||Q.inc.M||Q.inc.Tr))return 'Working: '+m(x)+' ÷ '+c+' ships ';
+ if(Q.mode==='total')return 'Working: '+m(x)+' ÷ '+c+' ships = '+m(x/c)+(Q.inc.T?' − '+m(tech)+' '+tn+' technology':'')+(Q.inc.M?' − '+m(qn('qM')*20)+' maintenance (20 × '+m(qn('qM'))+')':'')+(Q.inc.Tr?' − '+m(qn('qT')*20)+' training (20 × '+m(qn('qT'))+')':'')+' ';
+ return ''}
+function qDraw(){Object.keys(QKEY).forEach(id=>document.querySelectorAll('#'+id+' button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.q===String(Q[QKEY[id]]))));
+ const us=Q.who==='us';$('qUsBox').hidden=!us;$('qTotBox').hidden=Q.mode!=='total';$('qNumBox').hidden=!Q.mode;
+ document.querySelectorAll('#qInc button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.k==='none'?Q.incNone:!!Q.inc[b.dataset.k]));
+ $('qTechIn').hidden=!((Q.mode==='total'&&Q.inc.T)||Q.mode==='shipT');$('qMIn').hidden=!(Q.mode==='total'&&Q.inc.M);$('qTIn').hidden=!(Q.mode==='total'&&Q.inc.Tr);
+ $('qModeH').textContent=us?'2. How will we say the price?':'2. How did they give the price?';
+ $('qNoteL').textContent=us?'What we ask for in return':'Anything else they said or asked for';
+ $('qNumL').textContent={ship:'Price per ship, $ million (e.g. 33.6)',shipT:'Price per ship with technology, $ million (e.g. 43.6)',pct:'Discount off list, % (e.g. 30.25)',total:'Total for all ships, $ million (e.g. 436)'}[Q.mode]||'The number';
+ $('qMBox').hidden=Q.mp!=='bai';$('qTBox').hidden=Q.tp!=='bai';
+ $('qLateBox').hidden=Q.del==='ok';$('qOnBox').hidden=Q.del!=='some';
+ if(Desk.nextRung){const r=Desk.nextRung();$('qPlanTxt').textContent=r?'Planned step: '+r[0]+'% off. Ask for: '+r[1]+'.':'No planned steps left. Hold on price, or add a variable.'}
+ if(Desk.ladderInfo){const li=Desk.ladderInfo(),o=li.ours;
+  $('qLadSaid').innerHTML=o.length?'<b>We have said:</b> '+o.map((d,i)=>d+'%'+(i?' (step '+(o[i-1]-d).toFixed(2)+')':'')).join(' → ')+'.':'<b>We have not made an offer yet.</b>';
+  $('qLad').innerHTML=li.steps.map((r,i)=>{const st=li.state(i);return '<li class="'+(st==='done'?'done':st==='next'?'next':st==='skip'?'done':'')+'">'+(st==='done'?'✓ Said: ':st==='next'?'Next: ':st==='skip'?'Passed (we went lower): ':'')+r[0]+'% off. Ask for: '+esc(r[1])+'</li>'}).join('')}
+ const p=qPrice(),list=+Q.hull,o=$('qOut');let ok=false,warn='';o.className='qOut';
+ if(!Q.mode)o.textContent='Choose how the price was given, then type the number.';
+ else if(p===null)o.textContent='Type the number they said.';
+ else if(p===undefined)o.textContent='Now tap what is in the total.';
+ else if(p==='svc')o.textContent='Enter the yearly price of each service in the total. If they did not say, ask them.';
+ else if(p===null)o.textContent='Type the number.';
+ else if(!isFinite(p))o.textContent='That is not a number. Type digits only, e.g. 33.6';
+ else if(p<=0){o.className='qOut bad';o.textContent='✕ That leaves nothing for the ship. Check the number and the answers above.'}
+ else{const d=(1-p/list)*100;ok=true;o.textContent=qWork(p)+'= '+m(p)+' a ship, without technology. That is '+d.toFixed(2)+'% off the '+m(list)+' list.';o.className='qOut good';
+  if(d<0){warn='above';o.className='qOut bad';o.textContent=qWork(p)+'= '+m(p)+' a ship. ✕ That is ABOVE the '+m(list)+' list price. Did it include technology or services? Check step 2.'}
+  else if(d>50){warn='big';o.className='qOut bad';o.textContent=qWork(p)+'= '+m(p)+' a ship. ✕ That is '+d.toFixed(1)+'% off. Very unlikely. Check step 2 and the number.'}}
+ const c=qn('qShips'),techN=TECH[Q.tech];
+ const L=ok&&c>0?qLate(p,list,c):{need:Q.del!=='ok',ok:false,msg:'Enter the price and ships first.'},lo=$('qLateOut');
+ if(L.need){lo.className='qOut';
+  if(!L.ok)lo.textContent=L.msg||'That extra discount leaves nothing for the later ships.';
+  else{let t=L.lateN+' later '+(L.lateN===1?'ship':'ships')+' ('+L.when+') at '+m(L.lp)+' each, '+((1-L.lp/list)*100).toFixed(2)+'% off. ';
+   t+=L.D>0?'Saves '+m(L.p0=list*L.D/100)+' a ship, '+m(list*L.D/100*L.lateN)+' for the '+L.lateN+'. ':'';
+   t+='Average across all '+c+': '+m(L.avg)+' a ship, '+((1-L.avg/list)*100).toFixed(2)+'% off.';
+   if(L.noD){lo.className='qOut warn';t='! No extra discount for the later ships yet. Ask for one before agreeing. '+t}
+   else lo.className='qOut good';
+   if(L.low){lo.className='qOut warn';t+=' ! Only '+L.onN+' by Spring Year 2. Team minimum is '+T.minOn+'.'}
+   lo.textContent=t}}
+ const svcT=(prov,id,name)=>prov==='bai'?(isFinite(qn(id))?name+' from Bent Anchor at '+m(qn(id))+' a year a ship':name+' from Bent Anchor, price not set'):name+' from a third party';
+ const who=Q.who==='them'?'Bent Anchor offers':Q.who==='us'?'ShipX offers':'[Who?] offers';
+ $('qSum').textContent=who+' '+(c>0?c:'?')+' '+(Q.hull==='40'?'Bubble-Hull':'base hull')+' ships at '+(ok?m(p)+' each ('+((1-p/list)*100).toFixed(2)+'% off)':'[price?]')+', '+(techN==='None'?'no technology':techN+' technology')+', '+(L.need&&L.ok?L.dates.replace(/;/g,',')+' off':QDEL[Q.del])+'. '+svcT(Q.mp,'qM','Maintenance')+'. '+svcT(Q.tp,'qT','Training').replace(/^T/,'T')+'.'+($('qDep').value.trim()?' '+qn('qDep')+'% paid on order.':'')+($('qNote').value.trim()?' Also: '+$('qNote').value.trim()+'.':'');
+ if(Desk.varsList){const ex=Desk.varsList().filter(v=>v.s==='play'||v.s==='agreed');if(ex.length)$('qSum').textContent+=' Extras: '+ex.map(v=>v.n+(v.s==='agreed'?' (agreed)':' (discussing)')).join(', ')+'.'}
+ {const nEx=Desk.varsList?Desk.varsList().filter(v=>v.s==='play'||v.s==='agreed').length:0;
+  const tk=['ships','hull','tech','del','maint','train','pay','guar','future','fin','model'],nAg=Desk.termGet?tk.filter(k=>Desk.isLocked(k)).length:0,nOff=Desk.termGet?tk.filter(k=>!Desk.isLocked(k)&&Desk.termGet(k).st==='off').length:0;
+  $('qS3s').textContent=(c>0?c:'?')+' '+(Q.hull==='40'?'Bubble-Hull':'base hull')+' ships · '+(techN==='None'?'no technology':techN+' technology')+' · '+QDEL[Q.del]+' · maintenance '+(Q.mp==='bai'?m(qn('qM'))+' BA':'third party')+' · training '+(Q.tp==='bai'?m(qn('qT'))+' BA':'third party')+(nEx?' · '+nEx+' extra'+(nEx>1?'s':''):'')+(nAg?' · ✓ '+nAg+' agreed':'')+(nOff?' · ✕ '+nOff+' off the table':'');
+  $('qS3c').textContent=$('qS3').open?'Fold':'Change'}
+ const b=$('qSend');b.className='tbtn qSend'+(Q.who==='them'?' them':'');
+ const svcOk=(Q.mp!=='bai'||isFinite(qn('qM')))&&(Q.tp!=='bai'||isFinite(qn('qT')));
+ if(!Q.who){b.disabled=true;b.textContent='Step 1: choose who made the offer'}
+ else if(!ok){b.disabled=true;b.textContent='Step 2: enter the price'}
+ else if(!(c>0&&Number.isInteger(c))){b.disabled=true;b.textContent='Step 3: enter the number of ships'}
+ else if(L.need&&!L.ok){b.disabled=true;b.textContent='Step 3: finish the later-delivery box'}
+ else if(!svcOk){b.disabled=true;b.textContent='Step 3: enter the service prices, or choose Third party'}
+ else{b.disabled=false;b.textContent=(warn?'Check first. ':'')+'Send '+(Q.who==='them'?"Bent Anchor's":"ShipX's")+' offer to the Board'}
+ if(/^Step 3/.test(b.textContent)&&!$('qS3').open)$('qS3').open=true;
+ const ready=ok&&c>0&&Number.isInteger(c)&&svcOk&&!(L.need&&!L.ok);qVerdict({p,L},ready);$('qOptRow').hidden=!(ready&&Q.who==='them');
+ return{p,ok,warn,L}}
+const QKEEP=['qOnN','qLateD','qDep'];
+const qKeep=()=>{try{const o={lateW:Q.lateW};QKEEP.forEach(k=>o[k]=$(k).value);localStorage.setItem('shipxDeskQ',JSON.stringify(o))}catch(e){}};
+Desk.quickSync=()=>{qFF();qExDraw();Q.hull=S.ship;Q.tech=S.tech;Q.del=S.delivery;Q.mp=S.mProv;Q.tp=S.tProv;$('qShips').value=$('count').value;$('qM').value=$('qM2').value=$('mCost').value;$('qT').value=$('qT2').value=$('tCost').value;let kp={};try{kp=JSON.parse(localStorage.getItem('shipxDeskQ')||'{}')}catch(e){}QKEEP.forEach(k=>{if(k in kp)$(k).value=kp[k]});if(kp.lateW)Q.lateW=kp.lateW;qDraw()};
+Desk.quickFill=(d,a)=>{Q.who='us';Q.mode='pct';$('qNum').value=d;$('qNote').value=a||'';qDraw()};
+$('paneQuick').addEventListener('click',e=>{const b=e.target.closest('.qSeg button');if(!b)return;
+ if(b.parentElement.id==='qLateW')setTimeout(qKeep,0);
+ if(b.parentElement.id==='qInc'){const k=b.dataset.k;if(k==='none'){Q.inc={T:false,M:false,Tr:false};Q.incNone=true;Q.incDone=true}else{Q.inc[k]=!Q.inc[k];Q.incNone=false;Q.incDone=Q.inc.T||Q.inc.M||Q.inc.Tr;if(Q.inc.M)Q.mp='bai';if(Q.inc.Tr)Q.tp='bai'}$('qMsg').textContent='';qDraw();return}const k=QKEY[b.parentElement.id];if(!k)return;Q[k]=b.dataset.q;$('qMsg').textContent='';$('qNext').hidden=true;qDraw()});
+$('paneQuick').addEventListener('input',e=>{if(QKEEP.includes(e.target.id))setTimeout(qKeep,0);const id=e.target.id,pair={qM:'qM2',qM2:'qM',qT:'qT2',qT2:'qT'}[id];if(pair)$(pair).value=e.target.value;$('qMsg').textContent='';qDraw()});
+$('qPlan').onclick=()=>{const r=Desk.nextRung&&Desk.nextRung();if(!r){$('qMsg').textContent='No planned steps left. Hold on price, or add a variable.';return}Desk.quickFill(r[0],r[1])};
+$('qGoBoard').onclick=()=>Desk.pane('board');
+$('paneQuick').addEventListener('click',e=>{const b=e.target.closest('[data-qst],[data-qnotes]');if(!b)return;
+ if(b.dataset.qnotes){const n=document.querySelector('[data-qnb="'+b.dataset.qnotes+'"]');n.hidden=!n.hidden;return}
+ const k=b.dataset.k,cur=Desk.termGet(k).st,lk=Desk.isLocked(k),now=lk?'agreed':cur,st=b.dataset.qst===now?'open':b.dataset.qst;Desk.termSet(k,st);qFF();qDraw()});
+$('paneQuick').addEventListener('input',e=>{const f=e.target.dataset.qn;if(f)Desk.termNote(e.target.dataset.k,f,e.target.value)});
+$('qS3').addEventListener('toggle',()=>{$('qS3c').textContent=$('qS3').open?'Fold':'Change'});
+$('paneQuick').addEventListener('change',e=>{const k=e.target.dataset.qffc,l=e.target.dataset.qlock;if(l&&Desk.lockSet){Desk.lockSet(l,e.target.checked);qFF();qDraw();return}if(!k||!Desk.ffSet)return;Desk.ffSet(k,e.target.checked);qFF()});
+const XU={sy:'a ship a year',so:'a ship, one-off',fy:'all ships a year',fo:'all ships, one-off'};
+function qExDraw(){if(!Desk.varsList)return;const L=Desk.varsList(),act=L.map((v,i)=>[v,i]).filter(x=>x[0].s==='play'||x[0].s==='agreed');
+ $('qExList').innerHTML=act.length?act.map(([v,i])=>{const x=parseFloat(v.v);return '<div class="qExRow"><span class="nm">'+esc(v.n)+'</span><span class="val">'+(v.nv||!isFinite(x)?'No value yet':(x<0?'Costs us ':'Worth ')+m(Math.abs(x))+' '+XU[v.u])+'</span><div class="tStat" role="group" aria-label="Status of '+esc(v.n)+'">'+[['play','Discussing'],['agreed','Agreed'],['off','Off the table']].map(s=>'<button type="button" data-xs="'+s[0]+'" data-xi="'+i+'" aria-pressed="'+(v.s===s[0])+'">'+s[1]+'</button>').join('')+'</div></div>'}).join(''):'<p class="small muted" style="margin:0">None yet.</p>';
+ $('qExDL').innerHTML=L.filter(v=>v.s==='open').map(v=>'<option value="'+esc(v.n)+'">').join('')}
+Desk.quickExtras=qExDraw;
+$('qExList').addEventListener('click',e=>{const b=e.target.closest('[data-xs]');if(!b)return;Desk.varSet(+b.dataset.xi,{s:b.dataset.xs});$('qExMsg').textContent=b.dataset.xs==='agreed'?'✓ Agreed. It carries over to every offer.':b.dataset.xs==='off'?'Crossed off. It moves to Off the table in the Terms tab.':'';qDraw()});
+$('qExAddB').onclick=()=>{const n=$('qExN').value.trim(),raw=$('qExV').value.trim(),x=parseFloat(raw.replace(/[$,\s]/g,''));
+ if(!n){$('qExMsg').textContent='Name the extra first.';return}if(raw&&!isFinite(x)){$('qExMsg').textContent='Value: type a number, e.g. 0.05';return}
+ Desk.varAdd({n,v:raw?String(x):'',nv:!raw,u:$('qExU').value,s:'play'});$('qExN').value='';$('qExV').value='';
+ $('qExMsg').textContent='✓ Added as Discussing. Tap Agreed when both sides say yes.'+(raw?'':' Add a value later in the Terms tab.');qDraw()};
+$('qSend').onclick=()=>{const st=qDraw();if(!st.ok||!Q.who)return;
+ if(Desk.isLocked&&Desk.isLocked('price')){$('qMsg').textContent='Ship price is Agreed and locked. Untick Agreed under More tools, Calculator.';return}
+ const key=JSON.stringify([Q,$('qNum').value,$('qShips').value]);
+ if(st.warn&&qBig!==key){qBig=key;$('qMsg').textContent='✕ Not sent yet. This price looks wrong. Check steps 2 and 3. If it really is what was said, press Send again.';return}
+ qBig='';
+ const sendP=qApply(st);
+ const who=Q.who==='them'?'Bent Anchor':'ShipX';$('saveAsk').value=$('qNote').value.trim();
+ whoSet(Q.who);save(who,true);
+ $('qMsg').textContent='✓ Sent: offer '+offers.length+', '+who+', '+m(sendP)+' a ship'+(st.L&&st.L.need?' on average':'')+' ('+((1-sendP/ +Q.hull)*100).toFixed(2)+'% off).';
+ Q.who=null;Q.mode=null;Q.inc={T:false,M:false,Tr:false};Q.incDone=false;Q.incNone=false;$('qNum').value='';$('qNote').value='';qKeep();$('qS3').open=false;qDraw();$('qNext').hidden=false};
+
+/* ---------- Their packages: saved, compared, not sent ---------- */
+let OPTS=[];try{OPTS=JSON.parse(localStorage.getItem('shipxDeskOpts')||'[]')}catch(e){OPTS=[]}
+const optStore=()=>{try{localStorage.setItem('shipxDeskOpts',JSON.stringify(OPTS))}catch(e){}};
+const QF=['qNum','qShips','qM','qT','qDep','qNote','qOnN','qLateD'];
+function optDraw(){const best=OPTS.length?Math.min(...OPTS.map(o=>o.total)):0;
+ const h=OPTS.map((o,i)=>{const isB=OPTS.length>1&&o.total===best,diff=o.total-best;
+  return '<div class="opt'+(isB?' best':'')+'"><div class="optH"><b>'+esc(o.name)+'</b>'+(isB?'<span class="optStar">★ Lowest whole cost</span>':'')+(o.sent?'<span class="optSent">✓ Sent to Board</span>':'')+'</div>'+
+  '<p class="optV '+o.vcls+'">'+esc(o.verdict)+'</p>'+(o.disc<0||o.disc>50?'<p class="optV bad">✕ Check: '+(o.disc<0?'above list price':'over 50% off')+'. Was it entered right?</p>':'')+'<dl>'+
+  '<dt>Ship price</dt><dd>'+m(o.price)+' ('+o.disc.toFixed(2)+'% off)</dd>'+
+  '<dt>Ships</dt><dd>'+o.c+' '+esc(o.hull)+'</dd><dt>Technology</dt><dd>'+esc(o.tech)+'</dd><dt>Delivery</dt><dd>'+esc(o.del)+'</dd>'+
+  '<dt>Maintenance</dt><dd>'+esc(o.ms)+'</dd><dt>Training</dt><dd>'+esc(o.ts)+'</dd>'+(o.note?'<dt>Also</dt><dd>'+esc(o.note)+'</dd>':'')+
+  '</dl><dl class="big"><dt>Yearly cost per ship</dt><dd>'+m(o.annual)+'</dd><dt>Whole cost, 20 years</dt><dd>'+m(o.total)+(OPTS.length>1&&!isB?' <span class="small" style="font-weight:400">(+'+m(diff)+')</span>':'')+'</dd></dl>'+
+  '<div class="optB"><button type="button" class="go" data-osend="'+i+'">Send this one to Board</button><button type="button" data-oload="'+i+'">Edit</button><button type="button" data-odel="'+i+'">Remove</button></div></div>'}).join('');
+ ['qOpts','bOpts'].forEach(id=>{$(id).innerHTML=h;$(id+'Card').hidden=!OPTS.length})}
+function optLoad(i){const o=OPTS[i];Desk.pane('quick');Object.assign(Q,JSON.parse(JSON.stringify(o.Q)));Q.who='them';QF.forEach(k=>{$(k).value=o.f[k]||''});$('qM2').value=$('qM').value;$('qT2').value=$('qT').value;$('qOptName').value=o.name;$('qS3').open=true;qDraw();$('qMsg').textContent='Loaded '+o.name+'. Change it, then save it again or send it.'}
+let qBigOpt='';
+$('qSaveOpt').onclick=()=>{const st=qDraw();if(!st.ok||Q.who!=='them')return;
+ const okey=JSON.stringify([Q,$('qNum').value,$('qShips').value]);if(st.warn&&qBigOpt!==okey){qBigOpt=okey;$('qMsg').textContent='✕ Not saved yet. This price looks wrong (see the red box in step 2). If it really is what they said, press Save again.';return}qBigOpt='';const r=work(),bc=$('bar').className;
+ const name=$('qOptName').value.trim()||('Package '+'ABCDEFGH'[Math.min(OPTS.length,7)]),f={};QF.forEach(k=>f[k]=$(k).value);
+ const svc=(prov,id)=>prov==='bai'?'Bent Anchor, '+m(qn(id))+' a year a ship':'Third party';
+ const o={name,Q:JSON.parse(JSON.stringify(Q)),f,price:r.price,disc:r.disc,c:r.c,hull:Q.hull==='40'?'Bubble-Hull':'base hull',tech:TECH[Q.tech],del:$('dates').value||DEL[S.delivery],ms:svc(Q.mp,'qM'),ts:svc(Q.tp,'qT'),note:$('qNote').value.trim(),annual:r.annual,total:r.total,verdict:$('verdict').textContent,vcls:/\bno\b/.test(bc)?'bad':/\bok\b/.test(bc)?'good':'warn'};
+ const ex=OPTS.findIndex(x=>x.name===name);if(ex>=0)OPTS[ex]=o;else OPTS.push(o);optStore();optDraw();
+ Q.mode=null;Q.inc={T:false,M:false,Tr:false};Q.incDone=false;Q.incNone=false;['qNum','qNote','qLateD','qOptName'].forEach(k=>$(k).value='');qDraw();
+ $('qMsg').textContent='✓ Saved '+name+'. Not sent. Enter the next package, or compare them at the top.';$('qOptsCard').scrollIntoView({block:'start'})};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-osend],[data-oload],[data-odel],[data-oclear]');if(!b)return;
+ if(b.dataset.oclear){if(confirm('Clear all saved packages?')){OPTS=[];optStore();optDraw()}return}
+ if(b.dataset.odel!==undefined){OPTS.splice(+b.dataset.odel,1);optStore();optDraw();return}
+ const i=+(b.dataset.oload??b.dataset.osend);optLoad(i);
+ if(b.dataset.osend!==undefined){const n=offers.length;$('qSend').click();if(offers.length>n){OPTS[i].sent=true;optStore();optDraw();$('qMsg').textContent='✓ Sent '+OPTS[i].name+' to the Board as Bent Anchor\'s offer. The other packages stay here for reference.'}}});
 const hadLive=(()=>{try{return !!localStorage.getItem('shipxDeskLive')}catch(e){return false}})();
-load();applyLimits();if(!hadLive)applyStart();splitDraw();
+load();applyLimits();if(!hadLive)applyStart();splitDraw();if(offers.length)$('qS3').open=false;Desk.quickSync();optDraw();
 document.querySelectorAll('[data-source]').forEach(e=>e.innerHTML=srcHTML(e.dataset.source));
 chips();calc();draw();
 })();</script>
@@ -1288,7 +1828,7 @@ chips();calc();draw();
 const LIST={BHO:40,BSO:31.5},GM={BHO:39,BSO:32.5},TP=.9,TPM=.6,TPT=.3,LIFE=20;
 const TECH=[["None",0],["Low",4],["Medium-Low",8],["Medium",10],["Medium-High",12],["High",14]];
 const START=Date.parse("2026-11-07T13:00:00Z"),MIN=60000;
-const PHASES=[[0,20,"Connection and exploration","Rapport, agenda, flexible terms first"],[20,40,"Making proposals","We go first, with a full package"],[40,115,"Exchanging and bargaining","Small steps. Add variables"],[115,135,"Seeking agreements","Contingencies. Summarise"],[135,150,"Close","Confirm every term and the deal sheet"]];
+const PHASES=[[0,20,"Connection and exploration","Rapport, agenda, flexible terms first"],[20,40,"Making proposals","They present their packages. We clarify, then reply with our full package"],[40,115,"Exchanging and bargaining","Small steps. Add variables"],[115,135,"Seeking agreements","Contingencies. Summarise"],[135,150,"Close","Confirm every term and the deal sheet"]];
 const VARS=[
  ["Guaranteed delivery slot","get","A promise to hold a slot. Actual ships and dates go in the Delivery box."],
  ["20-year service contracts","give","We need these anyway. Long revenue for them."],
@@ -1310,7 +1850,7 @@ const DEF=()=>({
  cfg:T,
  deal:{disc:T.disc,hull:T.hull,tech:T.tech,ships:T.ships,m:T.m,t:T.t,del:"all"},
  ladder:[[T.open,"10 ships, 20-year services"],[39.25,"Spring Year 2 slots confirmed"],[38.25,"Maintenance at $0.485M a year"],[37.5,"Training at $0.245M a year"],[37,"3 extra warranty years included"],[36.75,"Fuel guarantee (final step)"]],
- ff:{},lock:{},log:[],vars:VARS.map(v=>({n:v[0],k:v[1],w:v[2],v:"",u:"sy",s:"open"})),prac:null});
+ ff:{},lock:{},terms:{},log:[],vars:VARS.map(v=>({n:v[0],k:v[1],w:v[2],v:"",u:"sy",s:"open"})),prac:null});
 let S=DEF(),safe=false,view="move",canSave=true;
 try{const r=localStorage.getItem("shipxDeskBoard");if(r){const p=JSON.parse(r),d=DEF();S={...d,...p,cfg:T,deal:{...d.deal,...p.deal}};
  /* v2: swap in the new ladder only if the saved one is still the old default and no ShipX offer has been made */
@@ -1338,8 +1878,9 @@ function pkg(dl){const d=dl||S.deal,net=P()*(1-d.disc/100),svc=d.m+d.t;
  return{net,svc,svcPts,agreed,worth,yearly,clear:worth+(d.fadv||0)*LIFE/P()*100-walk()}}
 
 /* ---------- ZOPA drawing ---------- */
+function evalDeal(){const th=last("them"),n=S.log.filter(l=>l.w==="them").length;if(th&&th.deal)return{dl:th.deal,who:"Bent Anchor's latest offer ("+n+")",short:"Their package"};return{dl:null,who:"the offer on screen (not sent yet)",short:"On-screen package"}}
 function drawZopa(){
- const svg=$("zopa"),W=Math.max(320,svg.clientWidth||900),pad=14,w0=walk(),fl=floorNow(),c=S.cfg,p=pkg();
+ const svg=$("zopa"),W=Math.max(320,svg.clientWidth||900),pad=14,w0=walk(),fl=floorNow(),c=S.cfg,EV=evalDeal(),p=pkg(EV.dl||undefined);
  /* Only the last 3 offers per side go on the bar. The full history is in Offers over time. The scale is set by our own limits, so it stays still, and widens only for an offer outside it. */
  const KEEP=3,recent=w=>S.log.filter(l=>l.w===w).slice(-KEEP).map(l=>l.d),shownV=recent("us").concat(recent("them"));
  /* in safe mode the scale uses no private figure, so it gives nothing away */
@@ -1353,7 +1894,7 @@ function drawZopa(){
   up.push({v:(c.tlo+c.thi)/2,t:"Target "+c.tlo+" to "+c.thi+"%",c:"z-b"});
   if(!us)up.push({v:c.open,t:"Open "+pc(c.open),c:"z-b"});
   dn.push({v:fl,t:"Their limit "+pc(fl)+" (guess)",c:"z-o"});
-  dn.push({v:p.worth,t:"Package worth "+pc(p.worth),c:"z-p"});
+  dn.push({v:p.worth,t:EV.short+" worth "+pc(p.worth),c:"z-p"});
  }
  if(us)up.push({v:us.d,t:"Our offer "+S.log.filter(l=>l.w==="us").length+": "+pc(us.d),c:"z-b",m:1});
  if(th)dn.push({v:th.d,t:"Their offer "+S.log.filter(l=>l.w==="them").length+": "+pc(th.d),c:"z-o",m:1});
@@ -1375,7 +1916,7 @@ function drawZopa(){
   s+=`<rect x="${x(c.tlo)}" y="${barY+37}" width="${x(c.thi)-x(c.tlo)}" height="15" style="fill:var(--blue);opacity:.9"/>`;
   const zw=xf-xw;
   if(xw-X0>95)s+=`<text class="z-zone" style="fill:var(--red)" x="${(X0+xw)/2}" y="${barY+33}" text-anchor="middle">No deal</text>`;
-  if(zw>70)s+=`<text class="z-zone" style="fill:var(--purple)" x="${(xw+xf)/2}" y="${barY+33}" text-anchor="middle">ZOPA ${(fl-w0).toFixed(1)} pts</text>`;
+  if(zw>70)s+=`<text class="z-zone" style="fill:var(--purple)" x="${(xw+xf)/2}" y="${barY+33}" text-anchor="middle">ZOPA ${(fl-w0).toFixed(1)} % points</text>`;
   if(X1-xf>110)s+=`<text class="z-zone" style="fill:var(--orange)" x="${(xf+X1)/2}" y="${barY+33}" text-anchor="middle">They likely say no</text>`;
   s+=`<line x1="${xw}" x2="${xw}" y1="${barY-8}" y2="${axisY+8}" style="stroke:var(--red);stroke-width:5"/>`;
  }
@@ -1398,21 +1939,22 @@ function drawZopa(){
  $("zopa").setAttribute("aria-label",safe?"Offers on the table":`Hard line ${pc(w0)}. Their limit guess ${pc(fl)}. Package worth ${pc(p.worth)}.`);
 }
 function drawStats(){
- const w0=walk(),fl=floorNow(),p=pkg(),n=S.deal.ships,zw=fl-w0,clear=p.clear;
- $("zSub").textContent=`${S.deal.hull==="BHO"?"BA-2500 Bubble-Hull":"BA-2500 base hull"}, $${P().toFixed(1)}M list. Further right means we pay less. $ row is ship price. Scale does not start at 0%. Shows the last 3 offers each side: ● ShipX, ■ Bent Anchor, numbered in order. Every offer is in Offers over time, below.`;
+ const EV=evalDeal(),w0=walk(),fl=floorNow(),p=pkg(EV.dl||undefined),n=S.deal.ships,zw=fl-w0,clear=p.clear;
+ $("zSub").textContent=`${S.deal.hull==="BHO"?"BA-2500 Bubble-Hull":"BA-2500 base hull"}, $${P().toFixed(1)}M list. Further right = bigger discount = better for ShipX. 1 % point = ${mm(P()/100)} a ship. ● ShipX, ■ Bent Anchor, last 3 offers each.`;
  const st=(l,v,s)=>`<div class="stat"><div class="lab">${l}</div><div class="val">${v}</div><div class="sub">${s}</div></div>`;
- $("stats").innerHTML=st("ZOPA width",zw.toFixed(1)+" pts",`${mm(zw/100*P())} per ship · ${mm(zw/100*P()*n,1)} all ${n}`)+
+ $("stats").innerHTML=st("ZOPA width",zw.toFixed(1)+" % points",`${mm(zw/100*P())} per ship · ${mm(zw/100*P()*n,1)} all ${n}`)+
   st("Ship price now",mm(p.net),`${mm(p.net*n,1)} all ${n}, one-off`)+
   st("Yearly cost now",mm(p.yearly),`per ship · ${mm(p.yearly*n,1)} all ${n}`)+
-  st("Package clears hard line by",(clear>=0?"+":"")+clear.toFixed(1)+" pts",`${mm(clear/100*P()*n,1)} over 20 years, all ${n}`);
- const r=$("zRead");
+  st("Package clears hard line by",(clear>=0?"+":"")+clear.toFixed(1)+" % points",`${mm(clear/100*P()*n,1)} over 20 years, all ${n}`);
+ $("zHelp").innerHTML=`The $ row under the % scale is the ship price. The scale does not start at 0%. The purple ZOPA runs from our walk-away (red line, our Global Mariner estimate) to our guess of Bent Anchor's limit (orange). Opening offers do not set the ZOPA. It moves only if Bent Anchor offers more than our guess, or the team changes Team numbers.`;
+ const r=$("zRead");const zPre="Checking "+EV.who+": ";
  if(zw<=0){r.className="pv read red";r.textContent="✕ No ZOPA on these estimates. Add variables, or check the Setup numbers."}
- else if(clear<0){r.className="pv read red";r.textContent=`✕ Package is ${(-clear).toFixed(1)} pts short of the hard line. Do not agree. We need more discount, or better services.`}
- else if(p.worth>=levelW(S.cfg.tlo)){r.className="pv read pur";r.textContent=`✦ ${p.worth>=levelW(T.stretch)?"Excellent":"Target met"}. Package is worth ${pc(p.worth)}: ${pc(S.deal.disc)} headline, ${p.svcPts>=0?"+":""}${p.svcPts.toFixed(1)} pts services, +${p.agreed.toFixed(1)} pts agreed variables.`}
- else{r.className="pv read yel";r.textContent=`! Acceptable. Package beats Global Mariner but sits below target (${pc(levelW(S.cfg.tlo))} worth). Keep adding variables.`}
+ else if(clear<0){r.className="pv read red";r.textContent=zPre+`✕ Package is ${(-clear).toFixed(1)} % points short of the hard line. Do not agree. We need more discount, or better services.`}
+ else if(p.worth>=levelW(S.cfg.tlo)){r.className="pv read pur";r.textContent=zPre+`✦ ${p.worth>=levelW(T.stretch)?"Excellent":"Target met"}. Package is worth ${pc(p.worth)}: ${pc((EV.dl||S.deal).disc)} headline, ${p.svcPts>=0?"+":""}${p.svcPts.toFixed(1)} % points services, +${p.agreed.toFixed(1)} % points agreed variables.`}
+ else{r.className="pv read yel";r.textContent=zPre+`! Acceptable. Package beats Global Mariner but sits below target (${pc(levelW(S.cfg.tlo))} worth). Keep adding variables.`}
 }
 function drawLines(){
- const p=pkg(),d=S.deal,w0=walk(),L=[];
+ const EV=evalDeal(),p=pkg(EV.dl||undefined),d=EV.dl||S.deal,w0=walk(),L=[];
  const add=(st,t,k,dd)=>L.push([st,t,k,dd]);
  add(p.clear>=-1e-9?"pass":"fail","Beat Global Mariner (our BATNA)","Our estimate",`Package ${pc(p.worth)} against ${pc(w0)}.`);
  add(p.yearly<=T.limit?"pass":"fail",`Yearly cap: $${T.limit}M per ship`,"Board mandate",`Now ${mm(p.yearly)}. Even list price is ${mm((P()+techV())/LIFE+TP)}.`);
@@ -1423,11 +1965,12 @@ function drawLines(){
  add("keep","Similar technology on purchased ships","Board mandate","Vendor prices are non-negotiable.");
  add("keep","Long-term partnership","Objective","They score us on the SVI.");
  const lab={pass:"✓ Pass",check:"! Check",fail:"✕ Breached",keep:"Keep to"};
- $("lines").innerHTML=L.map(l=>`<div class="hl ${l[0]}"><span class="st">${lab[l[0]]}</span><span><b>${l[1]}</b> <span class="kind">${l[2]}</span><span class="d">${l[3]}</span></span></div>`).join("");
+ const row=l=>`<div class="hl ${l[0]}"><span class="st">${lab[l[0]]}</span><span><b>${l[1]}</b> <span class="kind">${l[2]}</span><span class="d">${l[3]}</span></span></div>`,bad=L.filter(l=>l[0]==="fail"||l[0]==="check"),ok=L.filter(l=>!(l[0]==="fail"||l[0]==="check")),nP=L.filter(l=>l[0]==="pass").length;
+ $("lines").innerHTML=`<p class="small muted" style="margin:0 0 4px">Checking ${EV.who}.</p>`+(bad.length?bad.map(row).join(""):`<p style="font-weight:700;color:var(--green);margin:4px 0">✓ No problems found.</p>`)+`<details class="moreD"><summary>✓ ${nP} checks pass, and what to keep to</summary>${ok.map(row).join("")}</details>`;
 }
 function glance(){
  const us=last("us"),th=last("them");let h=`<span>Ours: <b style="color:var(--blue)">${us?pc(us.d):"not yet"}</b></span><span>Theirs: <b style="color:var(--orange)">${th?pc(th.d):"not yet"}</b></span>`;
- if(!safe){const p=pkg();h=`<span class="pv">ZOPA: <b style="color:var(--purple)">${walk().toFixed(1)} to ${floorNow().toFixed(1)}%</b></span>`+h+`<span class="pv">On-screen package: <b style="color:var(--purple)">${pc(p.worth)}</b></span>`}
+ if(!safe){const p=pkg();h=`<span class="pv">ZOPA: <b style="color:var(--purple)">${walk().toFixed(1)} to ${floorNow().toFixed(1)}%</b></span>`+h}
  $("glance").innerHTML=h;
 }
 /* ---------- clock ---------- */
@@ -1445,6 +1988,8 @@ function clock(){
 function checkMove(v,who,ask){
  const out=[],w0=walk(),us=last("us"),th=last("them");
  if(!isFinite(v))return out;
+ if(v>50)return[["bad",`✕ ${pc(v)} off looks like an entry error. Press Remove last and enter it again.`]];
+ if(v<0)return[["bad","✕ Above list price. This looks like an entry error. Press Remove last and enter it again."]];
  if(who==="us"){
   const ss=steps("us"),prev=ss.length?ss[ss.length-1]:null,c=S.cfg;
   if(!us&&th)out.push(["warn","They went first. Reply with our full package, not just a number."]);
@@ -1454,14 +1999,14 @@ function checkMove(v,who,ask){
    if(st<0)out.push(["bad","✕ This moves back up. It could damage trust."]);
    else if(st===0)out.push(["warn","! No move. Hold, or add a variable instead."]);
    else{if(prev!==null&&st>prev+1e-9)out.push(["warn",`! Step of ${st.toFixed(2)} is bigger than your last (${prev.toFixed(2)}). Keep steps shrinking.`]);
-    else if(st>1.5)out.push(["warn",`! Step of ${st.toFixed(2)} pts is large. Each point is $${(P()*.01*S.deal.ships).toFixed(1)}M across the fleet.`]);
-    else out.push(["good",`✓ Small step: ${st.toFixed(2)} pts, or ${mm(st/100*P()*S.deal.ships,1)} across the fleet.`])}}
+    else if(st>1.5)out.push(["warn",`! Step of ${st.toFixed(2)} % points is large. Each point is $${(P()*.01*S.deal.ships).toFixed(1)}M across the fleet.`]);
+    else out.push(["good",`✓ Small step: ${st.toFixed(2)} % points, or ${mm(st/100*P()*S.deal.ships,1)} across the fleet.`])}}
   else if(v<c.thi+2)out.push(["warn","! Low for an opening. Little room to move."]);
   if(v%1===0)out.push(["warn","! Round number. A figure like "+(v-.25).toFixed(2)+"% sounds worked out."]);
   if(us&&!ask)out.push(["warn","! Name what we get in return."]);
  }else{
   if(th&&v<th.d)out.push(["warn","! They moved back. Ask why, calmly."]);
-  if(v<w0)out.push(["warn",`! Headline is ${(w0-v).toFixed(1)} pts under the hard line. Only a package can close that gap.`]);
+  if(v<w0)out.push(["warn",`! Headline is ${(w0-v).toFixed(1)} % points under the hard line. Only a package can close that gap.`]);
   else if(v>=S.cfg.thi)out.push(["good","✓ At or above our target range."]);
   else if(v>=S.cfg.tlo)out.push(["good","✓ In our target range."]);
   else out.push(["good","✓ Above the hard line. Keep going for target."]);
@@ -1488,9 +2033,9 @@ const FF=[
  ["model","Type of vessel","fixed","BA-2500 in practice","flex","Likely flexible",""]];
 const FFT=FF.filter(x=>x.length>1);
 const FFL={flex:"○ Flexible",part:"◐ Part fixed",fixed:"● Fixed"};
-function drawFF(){$("ffB").innerHTML=FF.map(f=>f.length===1?`<tr class="ffG"><td colspan="4"><b>${esc(f[0])}</b></td></tr>`:`<tr class="${S.ff[f[0]]?"ffOn":""}"><td><b>${esc(f[1])}</b></td><td><span class="ffTag ff-${f[2]}">${FFL[f[2]]}</span><br><span class="small">${esc(f[3])}</span></td><td>${S.ff[f[0]]?`<span class="ffTag ff-fixed">● Fixed: they said so</span>`:`<span class="ffTag ff-${f[4]}">${FFL[f[4]]}</span><br><span class="small">${esc(f[5])}</span>`}</td><td><label class="ffBox"><input type="checkbox" data-ff="${f[0]}" ${S.ff[f[0]]?"checked":""}><span>Fixed</span></label></td></tr>`).join("");drawTiles()}
+function drawFF(){Desk.quickFF&&Desk.quickFF();$("ffB").innerHTML=FF.map(f=>f.length===1?`<tr class="ffG"><td colspan="4"><b>${esc(f[0])}</b></td></tr>`:`<tr class="${S.ff[f[0]]?"ffOn":""}"><td><b>${esc(f[1])}</b></td><td><span class="ffTag ff-${f[2]}">${FFL[f[2]]}</span><br><span class="small">${esc(f[3])}</span></td><td>${S.ff[f[0]]?`<span class="ffTag ff-fixed">● Fixed: they said so</span>`:`<span class="ffTag ff-${f[4]}">${FFL[f[4]]}</span><br><span class="small">${esc(f[5])}</span>`}</td><td><label class="ffBox"><input type="checkbox" data-ff="${f[0]}" ${S.ff[f[0]]?"checked":""}><span>Fixed</span></label></td></tr>`).join("");drawTiles()}
 const FTILE={maint:"t-maint",train:"t-train",guar:"t-guar",future:"t-fut",pay:"t-pay",fin:"t-fin",hull:"t-hull",tech:"t-tech",del:"t-delivery",price:"t-price",ships:"t-ships"};
-function drawTiles(){FFT.forEach(f=>{const id=FTILE[f[0]];if(!id)return;const t=$(id);if(!t)return;let l=t.querySelector(".ffLine");if(!l){l=document.createElement("div");l.className="ffLine";l.innerHTML=`<span class="ffTag"></span><label><input type="checkbox" data-ffc="${f[0]}" aria-label="They say ${esc(f[1])} is fixed">They say fixed</label><label><input type="checkbox" data-lockc="${f[0]}" aria-label="${esc(f[1])} is agreed">Agreed: lock</label>`;t.querySelector(".tileHead").after(l)}
+function drawTiles(){Desk.quickFF&&Desk.quickFF();FFT.forEach(f=>{const id=FTILE[f[0]];if(!id)return;const t=$(id);if(!t)return;let l=t.querySelector(".ffLine");if(!l){l=document.createElement("div");l.className="ffLine";l.innerHTML=`<span class="ffTag"></span><label><input type="checkbox" data-ffc="${f[0]}" aria-label="They say ${esc(f[1])} is fixed">They say fixed</label><label><input type="checkbox" data-lockc="${f[0]}" aria-label="${esc(f[1])} is agreed">Agreed: lock</label>`;t.querySelector(".tileHead").after(l)}
  const on=!!S.ff[f[0]],lk=!!S.lock[f[0]],tg=l.querySelector(".ffTag");tg.className="ffTag ff-"+(lk?"ok":on?"fixed":f[2]);tg.textContent=lk?"✓ Agreed":on?"● Fixed: they said so":FFL[f[2]];l.querySelector("[data-ffc]").checked=on;l.querySelector("[data-lockc]").checked=lk});applyLocks()}
 Desk.isLocked=k=>!!(S.lock&&S.lock[k]);
 function applyLocks(){FFT.forEach(f=>{const id=FTILE[f[0]],t=id&&$(id);if(!t)return;const on=!!S.lock[f[0]];t.classList.toggle("locked",on);
@@ -1498,12 +2043,12 @@ function applyLocks(){FFT.forEach(f=>{const id=FTILE[f[0]],t=id&&$(id);if(!t)ret
  if(!on&&f[0]==="del"&&Desk.calcRun)$("splitBox")&&$("splitBox").dispatchEvent(new Event("input"))})}
 
 function blockedVars(){return FFT.filter(f=>S.ff[f[0]]).flatMap(f=>f[6]?f[6].split("|"):[])}
-function ffNotes(){const on=FFT.filter(f=>S.ff[f[0]]);return on.map(f=>f[2]==="flex"?["warn",`! ${f[1]} is fixed for them. Ask why, then trade around it.`]:["bad",`✕ ${f[1]} is fixed for them, and part fixed for us. Check for a clash at a team break.`])}
-function leadList(){return FFT.filter(f=>f[2]!=="fixed"&&!S.ff[f[0]]).slice(0,3).map(f=>f[1])}
+function ffNotes(){const on=FFT.filter(f=>S.ff[f[0]]&&!(S.terms&&S.terms[f[0]]&&S.terms[f[0]].st==="off"));return on.map(f=>f[2]==="flex"?["warn",`! ${f[1]} is fixed for them. Ask why, then trade around it.`]:["bad",`✕ ${f[1]} is fixed for them, and part fixed for us. Check for a clash at a team break.`])}
+function leadList(){return FFT.filter(f=>f[2]!=="fixed"&&!S.ff[f[0]]&&!S.lock[f[0]]&&!(S.terms&&S.terms[f[0]]&&S.terms[f[0]].st==="off")).slice(0,3).map(f=>f[1])}
 function nextVar(){const b=blockedVars(),v=S.vars.find(x=>x.s==="open"&&!b.includes(x.n));return v?v.n:null}
 function nextMove(){
- const us=last("us"),th=last("them"),e=S.log[S.log.length-1],n=S.log.filter(l=>l.w==="us").length,rung=S.ladder[n],p=pkg(th&&th.deal?th.deal:undefined),w0=walk(),v=nextVar(),addV=v?`Raise a new variable: ${v}.`:"Add a new variable in the Board's Variables view.";
- if(!e)return{h:`Start on flexible terms, then go first at ${pc(rung[0])}`,b:[`Open on: ${leadList().join(", ")}.`,"Ask what matters most to them, and listen.",`Then present the whole package. Ask for: ${rung[1]}.`,"Back it with market discounts and Global Mariner's list prices."]};
+ const us=last("us"),th=last("them"),e=S.log[S.log.length-1],n=ladNext(),rung=S.ladder[n],p=pkg(th&&th.deal?th.deal:undefined),w0=walk(),v=nextVar(),addV=v?`Raise a new variable: ${v}.`:"Add a new variable in the Board's Variables view.";
+ if(!e)return{h:"Invite their proposals first, as in our email",b:[`Open on: ${leadList().join(", ")}.`,"Ask them to walk us through each package. Ask how each price is built.",`If they have no proposal, we open at ${pc(rung[0])}. Ask for: ${rung[1]}.`,"Do not react to their first number. Reply with our full package."]};
  if(e.w==="us")return{h:"Pause. It is their move",b:["Stay quiet and let them answer.","Ask what would make this work for them.",addV]};
  const ss=steps("them"),st=ss.length?ss[ss.length-1]:null,ours=steps("us"),lastOurs=ours.length?ours[ours.length-1]:null;
  if(us&&th.d>=us.d)return{h:"Their offer meets ours. Test the close",b:["Summarise every term out loud.","Take a team break before saying yes.","Confirm the deal sheet view in the Calculator."]};
@@ -1521,24 +2066,34 @@ function nextHTML(){
  const nvs=S.vars.filter(v=>v.nv&&v.s!=="open").map(v=>v.n),nvH=nvs.length?`<div class="gnList"><div class="gn warn">! Not valued yet: ${esc(nvs.join(", "))}. Counts as zero. Take it to a team break.</div></div>`:"";
  return `<div class="nextCard"><div class="eye">Our next move · PRIVATE</div><h3>${esc(n.h)}</h3>`+nvH+(ck.length?`<div class="gnList">${ck.map(c=>`<div class="gn ${c[0]}">${esc(c[1])}</div>`).join("")}</div>`:"")+`<ol>${n.b.map(x=>`<li>${esc(x)}</li>`).join("")}</ol></div>`}
 function drawNext(){const h=nextHTML();$("boardNext").innerHTML=h;$("calcNext").innerHTML=h}
+const oursD=()=>S.log.filter(l=>l.w==="us").map(l=>l.d);
+function ladNext(){const o=oursD();if(!o.length)return 0;const L=o[o.length-1],i=S.ladder.findIndex(r=>r[0]<L-1e-9);return i<0?S.ladder.length:i}
+function ladState(i){const nx=ladNext();if(i===nx)return"next";if(i>nx)return"";return oursD().some(d=>Math.abs(d-S.ladder[i][0])<1e-6)?"done":"skip"}
 function drawLadder(){
- const done=S.log.filter(l=>l.w==="us").length,c=S.ladder;
- $("ladder").innerHTML=c.map((r,i)=>{const st=i?c[i-1][0]-r[0]:null;
-  return `<div class="rung ${i<done?"done":i===done?"next":""}"><span class="n">${i<done?"✓":i===done?"Next":i+1}</span>
-  <div><input aria-label="Step ${i+1} percentage" data-lp="${i}" type="number" step="0.25" value="${r[0]}"><div class="stepsz num">${st===null?"Opening":"Step "+st.toFixed(2)+" pts"}</div></div>
+ const c=S.ladder;
+ $("ladder").innerHTML=c.map((r,i)=>{const st=i?c[i-1][0]-r[0]:null,ls=ladState(i);
+  return `<div class="rung ${ls==="done"?"done":ls==="next"?"next":""}"${ls==="skip"?' style="opacity:.55"':""}><span class="n">${ls==="done"?"✓":ls==="next"?"Next":ls==="skip"?"Passed":i+1}</span>
+  <div><input aria-label="Step ${i+1} percentage" data-lp="${i}" type="number" step="0.25" value="${r[0]}"><div class="stepsz num">${st===null?"Opening":"Step "+st.toFixed(2)+" % points"}</div></div>
   <input aria-label="Step ${i+1} ask" data-la="${i}" type="text" value="${esc(r[1])}">
-  <button class="btn ghost sm use" data-use="${i}">Price it</button></div>`}).join("");
+  <button class="btn ghost sm use" data-use="${i}">Use this step</button></div>`}).join("");
 }
 function drawRules(){
  const us=S.log.filter(l=>l.w==="us"),first=S.log[0],ss=steps("us"),shrink=ss.every((v,i)=>!i||v<=ss[i-1]+1e-9),big=ss.some(v=>v>1.5),round=us.some(l=>l.d%1===0),inplay=S.vars.filter(v=>v.s!=="open").length;
  const R=[
-  [!first?"":first.w==="us"?"ok":"warn","Go first",!first?"Open with the full package.":first.w==="us"?"Done. We set the anchor.":"They went first. Re-anchor."],
+  [!first?"":"ok","Anchoring",!first?"They propose first, as invited. Then we re-anchor.":first.w==="us"?"We set the anchor.":"They went first, as invited. Re-anchor with our full package."],
   [!us.length?"":us[0].d>=S.cfg.thi+3?"ok":"warn","Ambitious start",`Plan: ${pc(S.cfg.open)}. Heard in market: up to 40%.`],
-  [us.length<2?"":shrink&&!big?"ok":"warn","Small moves",ss.length?"Last step "+ss[ss.length-1].toFixed(2)+" pts.":"Largest planned step: 1.25 pts."],
+  [us.length<2?"":shrink&&!big?"ok":"warn","Small moves",ss.length?"Last step "+ss[ss.length-1].toFixed(2)+" % points.":"Largest planned step: 1.25 % points."],
   [!us.length?"":round?"warn":"ok","Be precise",round?"Avoid round numbers.":"Use quarter points, such as 36.25%."],
   [inplay>=3?"ok":"","More variables",`${inplay} of ${S.vars.length} raised so far.`]];
  $("rules").innerHTML=R.map(r=>`<div class="rule ${r[0]}"><b>${r[0]==="ok"?"✓ ":r[0]==="warn"?"! ":""}${r[1]}</b>${r[2]}</div>`).join("");
 }
+function drawLatest(){const t=last("them"),u=last("us"),nT=S.log.filter(l=>l.w==="them").length,nU=S.log.filter(l=>l.w==="us").length;
+ const row=(l,cls,who,n)=>`<div class="lat ${cls}"><b>${who}, offer ${n}: ${pc(l.d)} off · ${mm(l.p!==undefined?l.p:P()*(1-l.d/100))} a ship</b><span>${esc(l.s||"")}</span></div>`;
+ let h=!S.log.length?`<p class="small muted">No offers yet. Use Enter offer to add the first one.</p>`:"";
+ if(t)h+=row(t,"t","Bent Anchor's latest",nT);else if(S.log.length)h+=`<div class="lat t"><b>Bent Anchor: no offer yet</b></div>`;
+ if(u)h+=row(u,"u","Our latest",nU);else if(S.log.length)h+=`<div class="lat u"><b>ShipX: no offer yet</b></div>`;
+ if(t&&u){const g=u.d-t.d,mid=(u.d+t.d)/2,w=mid<walk()?"under our walk-away, so say no":mid<S.cfg.tlo?"under our target":"acceptable";h+=`<p class="latGap">Gap between us: ${g.toFixed(2)} % points of discount. That is ${mm(Math.abs(g)/100*P())} a ship, ${mm(Math.abs(g)/100*P()*S.deal.ships,1)} for all ${S.deal.ships} ships.</p><p class="small pv" style="margin-top:4px">If they say "split the difference", it lands at ${pc(mid)}, which is ${w}.</p>`}
+ $("latest").innerHTML=h}
 function drawLog(){
  $("bLog").innerHTML=S.log.length?S.log.map((l,i)=>`<div class="logRow"><span class="small num">${esc(l.t)}</span><span class="${l.w==="us"?"who-u":"who-t"} num">${pc(l.d)}</span><span class="small"><b>${l.w==="us"?"ShipX":"Bent Anchor"}</b>${l.a?": "+esc(l.a):""}${l.ds?" · Delivery: "+esc(l.ds):""}</span><span class="small num x">${mm(l.p!==undefined?l.p:P()*(1-l.d/100))} a ship</span></div>`).join(""):`<p class="small muted">No offers yet. Offers sent from the Calculator appear here.</p>`;
 }
@@ -1573,8 +2128,8 @@ function drawChart(){
  s+=vl(us,"u",-13)+vl(th,"t",24);
  svg.setAttribute("viewBox",`0 0 ${W} ${H}`);svg.setAttribute("height",H);svg.innerHTML=s;
  const u=last("us"),t=last("them");
- if(u&&t){const g=u.d-t.d,mid=(u.d+t.d)/2,w=mid<walk()?"which is under our hard line":mid<S.cfg.tlo?"which is under target":"which is acceptable";
-  $("gapRead").innerHTML=`<b>Gap: ${g.toFixed(2)} pts</b>, ${mm(g/100*P()*S.deal.ships,1)} across the fleet. If they say "split the difference", that lands at <b>${pc(mid)}</b>, ${w}.`}
+ if((u&&(u.d>50||u.d<0))||(t&&(t.d>50||t.d<0)))$("gapRead").innerHTML=`<b>✕ Check the figures.</b> An offer over 50% off, or above list price, looks like an entry error. Press Remove last and enter it again.`;
+ else if(u&&t)$("gapRead").textContent="● ShipX. ■ Bent Anchor. Red line: our walk-away. Blue band: our target. Orange dashes: our guess of their limit. The gap is in Offers on the table, above.";
  else $("gapRead").textContent="Blue circles are ShipX. Orange squares are Bent Anchor. Red line: our hard line. Blue band: our target. Orange dashes: our guess of their limit. Rounds run left to right.";
 }
 /* ---------- variables ---------- */
@@ -1588,13 +2143,13 @@ function drawVars(){
  varNums();
 }
 function varNums(){
- S.vars.forEach((v,i)=>{const e=$("vp"+i);if(e){const p=vPts(v);e.textContent=v.nv?"Can't value yet":p?(p>0?"+":"")+p.toFixed(2)+" pts":"-"}});
+ S.vars.forEach((v,i)=>{const e=$("vp"+i);if(e){const p=vPts(v);e.textContent=v.nv?"Can't value yet":p?(p>0?"+":"")+p.toFixed(2)+" % points":"-"}});
  const n=S.vars.filter(v=>v.s!=="open").length,a=S.vars.filter(v=>v.s==="agreed").length;
  $("varCount").textContent=`Variables: ${n} of ${S.vars.length} raised, ${a} agreed`;
  $("rate").innerHTML=`<b>Quick conversion:</b> 1 discount point is ${mm(P()*.01)} per ship, one-off, or ${mm(P()*.01*S.deal.ships,1)} across ${S.deal.ships} ships. Saving $0.05M a year on a service for 20 years is ${mm(1,1)} per ship, which is ${(1/P()*100).toFixed(2)} points.`;
 }
 /* ---------- refresh ---------- */
-function refresh(){save();drawZopa();drawStats();drawLines();glance();drawRules();drawLog();drawChart();drawNext();varNums();
+function refresh(){save();drawLatest();if($("bSheetD")&&$("bSheetD").open)$("bSheet").innerHTML=$("sheet").innerHTML;drawZopa();drawStats();drawLines();glance();drawRules();drawLog();drawChart();drawNext();varNums();
  $("saveState").textContent=canSave?"Saved in this browser only. Other devices will not see it.":"Saving is blocked here, so keep this tab open.";}
 function syncDeal(){const d=S.deal;$("dDisc").value=d.disc;$("dHull").value=d.hull;$("dTech").value=d.tech;$("dShips").value=d.ships;$("dMaint").value=d.m;$("dTrain").value=d.t;$("dDel").value=d.del;
  }
@@ -1611,7 +2166,7 @@ $("copyBtn").onclick=async()=>{const t=S.log.map(l=>`${l.t} ${l.w==="us"?"ShipX"
 $("ladder").addEventListener("change",e=>{const p=e.target.dataset.lp,a=e.target.dataset.la;
  if(p!==undefined){S.ladder[p][0]=parseFloat(e.target.value)||0;if(+p===0){T.open=S.ladder[0][0];Desk.saveTeam();Desk.teamForm()}drawLadder();refresh()}
  if(a!==undefined){S.ladder[a][1]=e.target.value;save()}});
-$("ladder").addEventListener("click",e=>{const u=e.target.dataset.use;if(u===undefined)return;const r=S.ladder[u];Desk.calcFill(r[0],r[1]);Desk.pane("calc")});
+$("ladder").addEventListener("click",e=>{const u=e.target.dataset.use;if(u===undefined)return;const r=S.ladder[u];Desk.pane("quick");Desk.quickFill(r[0],r[1]);scrollTo(0,0)});
 const dealMap={dDisc:["disc",1],dHull:["hull",0],dTech:["tech",1],dShips:["ships",1],dMaint:["m",1],dTrain:["t",1],dDel:["del",0]};
 Object.keys(dealMap).forEach(id=>$(id).oninput=()=>{const[k,n]=dealMap[id],v=n?parseFloat($(id).value):$(id).value;if(n&&!isFinite(v))return;S.deal[k]=v;refresh()});
 $("varB").addEventListener("input",e=>{const d=e.target.dataset;
@@ -1627,13 +2182,24 @@ $("bresetNo").onclick=()=>$("resetBox").hidden=true;
 $("bresetYes").onclick=()=>{const prac=null;S=DEF();$("resetBox").hidden=true;Desk.calcClear();Desk.calcResetAll();syncDeal();drawLadder();drawVars();refresh();Desk.drawQa();drawFF();clock()};
 $("dTech").innerHTML=TECH.map((t,i)=>`<option value="${i}">${t[0]} ($${t[1]}M per ship)</option>`).join("");
 if(typeof ResizeObserver!=="undefined")new ResizeObserver(()=>{drawZopa();drawChart()}).observe(document.querySelector("#paneBoard .wrap"));
-Desk.send=o=>{const now=new Date();S.log.push({w:o.w,d:o.d,p:o.p,a:o.a,ds:o.ds,deal:o.w==="them"?{...S.deal,disc:o.d,...o.deal}:null,t:String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0")});
+Desk.send=o=>{const now=new Date();S.log.push({s:o.s,w:o.w,d:o.d,p:o.p,a:o.a,ds:o.ds,deal:o.w==="them"?{...S.deal,disc:o.d,...o.deal}:null,t:String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0")});
  
  drawLadder();refresh();Desk.calcRun()};
 Desk.undo=()=>{Desk.calcPop();S.log.pop();drawLadder();refresh();Desk.calcRun()};
 Desk.clearOffers=()=>{Desk.calcClear();S.log=[];drawLadder();refresh();Desk.calcRun()};
-Desk.fillNext=()=>{const n=S.log.filter(l=>l.w==="us").length,r=S.ladder[n];if(r)Desk.calcFill(r[0],r[1])};
+Desk.ffInfo=k=>{const f=FFT.find(x=>x[0]===k);if(!f)return null;return{name:f[1],us:f[2],usL:FFL[f[2]],usTxt:f[3],themTxt:f[5],on:!!S.ff[k],lk:!!S.lock[k]}};
+Desk.termGet=k=>tGet(k);
+Desk.termSet=(k,st)=>{const t=tGet(k),was=t.st;t.st=st;S.lock[k]=st==="agreed";if(st==="off")S.ff[k]=true;else if(was==="off")S.ff[k]=false;drawFF();refresh();termsDraw()};
+Desk.termNote=(k,f,v)=>{tGet(k)[f]=v;save()};
+Desk.ffSet=(k,on)=>{S.ff[k]=on;drawFF();refresh()};
+Desk.lockSet=(k,on)=>{S.lock[k]=on;{const t=tGet(k);if(on)t.st="agreed";else if(t.st==="agreed")t.st="play"}drawTiles();refresh();Desk.quickFF&&Desk.quickFF()};
+Desk.ladderInfo=()=>({steps:S.ladder,state:ladState,ours:oursD()});
+Desk.nextRung=()=>S.ladder[ladNext()]||null;
+Desk.fillNext=()=>{const r=S.ladder[ladNext()];if(r)Desk.calcFill(r[0],r[1])};
 const ONE=(v,n)=>{const x=parseFloat(v.v);if(v.nv||!isFinite(x))return 0;return {sy:x*LIFE,so:x,fy:x*LIFE/n,fo:x/n}[v.u]||0};
+Desk.varsList=()=>S.vars;
+Desk.varAdd=o=>{const ex=S.vars.find(v=>v.n.toLowerCase()===o.n.toLowerCase());if(ex)Object.assign(ex,o,{n:ex.n});else S.vars.push({k:"both",w:"Added in the room.",...o});Desk.varsChanged()};
+Desk.varSet=(i,o)=>{Object.assign(S.vars[i],o);Desk.varsChanged()};
 Desk.agreedFleet=n=>S.vars.filter(v=>v.s==="agreed").reduce((s,v)=>s+ONE(v,n)*n,0);
 Desk.agreedNames=()=>S.vars.filter(v=>v.s==="agreed").map(v=>v.n);
 const QA=[
@@ -1657,17 +2223,17 @@ const QF=QA.flatMap(g=>g[1]);
 $("qaItem").innerHTML=QA.map(g=>`<optgroup label="${g[0]}">${g[1].map(i=>`<option>${esc(i[0])}</option>`).join("")}</optgroup>`).join("");
 const qaSet=()=>{const i=QF.find(x=>x[0]===$("qaItem").value);$("qaHint").textContent=i[1];$("qaUnit").value=i[2];$("qaNv").checked=!!i[3];$("qaDir").value=i[4];$("qaNameBox").hidden=i[0]!=="Something else";$("qaVal").disabled=!!i[3]};
 $("qaItem").onchange=qaSet;$("qaNv").onchange=()=>{$("qaVal").disabled=$("qaNv").checked};
-function drawQa(){const n=Math.max(1,S.deal.ships),L=S.vars.map((v,i)=>[v,i]).filter(x=>x[0].s!=="open"&&(x[0].qa||x[0].s==="agreed"));
+function drawQa(){const n=Math.max(1,S.deal.ships),L=S.vars.map((v,i)=>[v,i]).filter(x=>x[0].s!=="open"&&x[0].s!=="off"&&(x[0].qa||x[0].s==="agreed"));
  const off=L.filter(x=>x[0].s==="play").reduce((s,x)=>s+ONE(x[0],n)*n,0),ag=Desk.agreedFleet(n);
- $("qaList").innerHTML=L.map(([v,i])=>{const o=ONE(v,n);return `<div class="qaRow"><span><b>${esc(v.n)}</b><br>${v.nv?"Can't value yet":`${mm(o)} per ship · ${mm(o*n,1)} all ${n} · ${vPts(v).toFixed(2)} pts`}</span><select aria-label="Status of ${esc(v.n)}" data-qs="${i}"><option value="play" ${v.s==="play"?"selected":""}>Offered</option><option value="agreed" ${v.s==="agreed"?"selected":""}>✓ Agreed</option></select><button data-qr="${i}">Remove</button></div>`}).join("")+(L.length?`<p class="qaSum">Agreed: ${mm(ag,1)} all ${n}, 20 years. Offered, not agreed: ${mm(off,1)}.</p>`:"")}
+ $("qaList").innerHTML=L.map(([v,i])=>{const o=ONE(v,n);return `<div class="qaRow"><span><b>${esc(v.n)}</b><br>${v.nv?"Can't value yet":`${mm(o)} per ship · ${mm(o*n,1)} all ${n} · ${vPts(v).toFixed(2)} % points`}</span><select aria-label="Status of ${esc(v.n)}" data-qs="${i}"><option value="play" ${v.s==="play"?"selected":""}>Offered</option><option value="agreed" ${v.s==="agreed"?"selected":""}>✓ Agreed</option></select><button data-qr="${i}">Remove</button></div>`}).join("")+(L.length?`<p class="qaSum">Agreed: ${mm(ag,1)} all ${n}, 20 years. Offered, not agreed: ${mm(off,1)}.</p>`:"")}
 Desk.drawQa=drawQa;
-Desk.varsChanged=()=>{drawVars();refresh();Desk.calcRun();drawQa()};
+Desk.varsChanged=()=>{drawVars();refresh();Desk.calcRun();drawQa();termsDraw();Desk.quickExtras&&Desk.quickExtras()};
 $("qaAdd").onclick=()=>{const it=$("qaItem").value,name=it==="Something else"?$("qaName").value.trim():it,nv=$("qaNv").checked,x=parseFloat($("qaVal").value),m=$("qaMsg");
  if(!name){m.textContent="Give it a name first.";return}if(!nv&&!isFinite(x)){m.textContent="Enter a value, or tick Can't value yet.";return}
  const dir=+$("qaDir").value,val=nv?"":String(Math.abs(x)*dir),u=$("qaUnit").value,s=$("qaStat").value;
  let v=S.vars.find(y=>y.n===name);if(v)Object.assign(v,{v:val,u,s,nv,qa:true});else{v={n:name,k:dir<0?"give":"get",w:"Added in the room.",v:val,u,s,nv,qa:true};S.vars.push(v)}
  const n=Math.max(1,S.deal.ships),ss=steps("them"),st=ss.length?ss[ss.length-1]:null,pt=vPts(v);
- m.textContent=nv?"✓ Added at zero. Value it at a team break.":`✓ ${mm(ONE(v,n))} per ship, ${mm(ONE(v,n)*n,1)} all ${n}, ${pt.toFixed(2)} pts.`+(st?` Their last discount step was ${st.toFixed(2)} pts.`:"");
+ m.textContent=nv?"✓ Added at zero. Value it at a team break.":`✓ ${mm(ONE(v,n))} per ship, ${mm(ONE(v,n)*n,1)} all ${n}, ${pt.toFixed(2)} % points.`+(st?` Their last discount step was ${st.toFixed(2)} % points.`:"");
  $("qaVal").value="";$("qaName").value="";$("qaStat").value="play";Desk.varsChanged()};
 $("qaList").addEventListener("change",e=>{const i=e.target.dataset.qs;if(i!==undefined){S.vars[i].s=e.target.value;Desk.varsChanged()}});
 $("qaList").addEventListener("click",e=>{const i=e.target.dataset.qr;if(i===undefined)return;const v=S.vars[i];if(VARS.some(x=>x[0]===v.n)){Object.assign(v,{s:"open",v:"",nv:false,qa:false})}else S.vars.splice(i,1);$("qaMsg").textContent="";Desk.varsChanged()});
@@ -1676,7 +2242,7 @@ Desk.d1Render=()=>{const t=T,L=t.hull==="BHO"?40:31.5,G=t.hull==="BHO"?39:32.5,t
  const M=(x,d=2)=>"$"+x.toFixed(d)+"M",P=x=>(+x).toFixed(2)+"%",pr=d=>L*(1-d/100);
  const yr=(d,s)=>(pr(d)+tv)/20+s,fl=(d,s)=>yr(d,s)*20*n;
  const gmNet=G*(1-t.gm/100),wYr=(gmNet+tv)/20+.9,wFl=wYr*20*n,hard=(1-gmNet/L)*100,hard2=(1-(gmNet+(.9-t.svcT)*20)/L)*100,zw=t.floor-hard;
- const lad=S.ladder.map((r,i)=>`<tr><td>${i?"Step "+i:"Opening"}</td><td class="num">${P(r[0])}</td><td class="num">${M(pr(r[0]))}</td><td class="num">${i?(S.ladder[i-1][0]-r[0]).toFixed(2)+" pts":"-"}</td><td>${esc(r[1])}</td></tr>`).join("");
+ const lad=S.ladder.map((r,i)=>`<tr><td>${i?"Step "+i:"Opening"}</td><td class="num">${P(r[0])}</td><td class="num">${M(pr(r[0]))}</td><td class="num">${i?(S.ladder[i-1][0]-r[0]).toFixed(2)+" % points":"-"}</td><td>${esc(r[1])}</td></tr>`).join("");
  const ff=g=>FFT.filter(f=>f[2]===g).map(f=>f[1]).join(", ");
  const tbd='<span class="tbd">[Team to confirm]</span>';
  $("d1Body").innerHTML=`
@@ -1711,16 +2277,19 @@ Desk.d1Render=()=>{const t=T,L=t.hull==="BHO"?40:31.5,G=t.hull==="BHO"?39:32.5,t
 <p><b>For Bent Anchor (estimate):</b> technology prices fixed by vendors. Delivery limited by slots. Most other terms likely flexible. Indifferent to lease or buy, as they are paid in full.</p>
 <p><b>Red lines:</b> operating by Spring Year 2. Maintenance for 20 years. Similar technology on purchased ships. Never worse than our Global Mariner estimate.</p>
 <h3>1.7 Process and agenda</h3>
-<p>Start with flexible terms to build momentum: ${leadList().join(", ")}. Then put a full package on the table. Discuss issues together, not one at a time: nothing is agreed until everything is agreed.</p>
+<p><b>Before the meeting:</b> on 6 November we emailed Bent Anchor asking for two or three alternative packages per ship. We asked for vessel configurations and technology options, itemised pricing and fleet discounts, delivery schedules, 20-year maintenance and training, payment and financing, warranties and guarantees, and ideas for a longer-term partnership. ${tbd} Note whether they replied.</p>
+<p><b>Agenda:</b> rapport first. Then Bent Anchor presents its packages and we ask clarifying questions. Then we discuss flexible terms to build momentum: ${leadList().join(", ")}. Then we reply with our full package. Discuss issues together, not one at a time: nothing is agreed until everything is agreed.</p>
 <table><tr><th>Time</th><th>Stage</th></tr>${PHASES.map(p=>{const f=x=>{const d=new Date(START+x*MIN);return String(d.getUTCHours()).padStart(2,"0")+":"+String(d.getUTCMinutes()).padStart(2,"0")};return `<tr><td class="num">${f(p[0])} to ${f(p[1])}</td><td>${p[2]}: ${p[3]}</td></tr>`}).join("")}</table>
 <h2>Part 2. Statement of proposals</h2>
-<p><b>We will propose first.</b> We have good information: both builders' list prices and market discount levels. An ambitious, precise opening sets the anchor.</p>
-<p><b>Opening package:</b> ${n} BA-2500 ${hn} ships with ${TECH[t.tech][0]} technology, all by Spring Year 2, at <b>${P(S.ladder[0][0])} off (${M(pr(S.ladder[0][0]))} a ship)</b>. 20-year maintenance and training with Bent Anchor, at prices below third-party rates.</p>
+<p><b>We have invited Bent Anchor to propose first.</b> Our email asked for two or three alternative packages. Their proposals will show what they value and where they can flex, which helps us find trades. It also shows good faith, which supports trust and the relationship.</p>
+<p><b>Managing the anchor (the first number, which pulls the discussion towards it):</b> we set our target, walk-away and opening before the meeting, so their figure does not move them. We will not react to their first number. We will ask how each package is built, compare it with objective criteria (Part I list prices, market discounts of 25% to 30% and up to 40%, Global Mariner list prices), then re-anchor with our full package.</p>
+<p><b>If they arrive without a proposal,</b> we open first with the package below.</p>
+<p><b>Our reply (or opening):</b> ${n} BA-2500 ${hn} ships with ${TECH[t.tech][0]} technology, all by Spring Year 2, at <b>${P(S.ladder[0][0])} off (${M(pr(S.ladder[0][0]))} a ship)</b>. 20-year maintenance and training with Bent Anchor, at prices below third-party rates.</p>
 <p><b>Precise figures only:</b> 38.25%, not "about 38%". ${M(pr(38.25))}, not "around 25 million". Precise numbers sound worked out and are harder to round against us.</p>
-<p><b>If they go first:</b> stay calm, ask how the price is built, then reply with our full package.</p>
+<p><b>Comparing their packages:</b> for each one, we price it per ship and per year on our cost formula, and check it against our walk-away and targets. We reply to the strongest package and use the differences between packages to see which variables matter most to them.</p>
 <h2>Part 3. Bargaining and exchanging concessions</h2>
 <h3>3.1 Options for mutual gain</h3>
-<ul><li>20-year service contracts for a better ship price.</li><li>A deposit above 20% for priority Spring Year 2 slots.</li><li>An option on 2 more ships, a right not a duty, for a volume rebate.</li><li>Later dates for the last ships, if the discount covers our cost of delay.</li><li>ShipX as a launch customer reference in the Mediterranean.</li><li>Evidence of our investor funding to reduce their risk.</li></ul>
+<ul><li>20-year service contracts for a better ship price.</li><li>A deposit above 20% for priority Spring Year 2 slots.</li><li>An option on 2 more ships, a right not a duty, for a volume rebate.</li><li>Later dates for the last ships, if the discount covers our cost of delay.</li><li>ShipX as a launch customer reference in the Mediterranean.</li><li>Evidence of our investor funding to reduce their risk.</li><li>Combining the best parts of their alternative packages into one package that works for both sides.</li></ul>
 <h3>3.2 Pattern of concessions</h3>
 <p>Each step is smaller than the last, and each one is paid for: "If you can…, we can…".</p>
 <table><tr><th>Move</th><th>Discount</th><th>Ship price</th><th>Step</th><th>We ask in return</th></tr>${lad}</table>
@@ -1735,10 +2304,45 @@ Desk.d1Render=()=>{const t=T,L=t.hull==="BHO"?40:31.5,G=t.hull==="BHO"?39:32.5,t
 <p><b>Authority:</b> we can commit within the board's parameters. Anything near a red line goes to a team break first.</p>
 <h3>5.2 Mapping the other party</h3><p>Bent Anchor is likely to focus on margin, slots, the financial risk of a new customer and service revenue. Team members, hierarchy and cultural differences: ${tbd}.</p>
 <h3>5.3 Relationships</h3><p>Open with rapport and shared goals. Thank them for each move. Keep a respectful tone, as their team scores us on the SVI.</p>
-<h3>5.4 Taking and staying in control</h3><p>Summariser: ${tbd}. Bring talks back by restating the agenda and agreed points.</p><p><b>Questions:</b> Which Spring Year 2 slots are free? What matters most to you in this deal? How is the price built? What evidence supports the 5% fuel saving?</p>
+<h3>5.4 Taking and staying in control</h3><p>Summariser: ${tbd}. Bring talks back by restating the agenda and agreed points.</p><p><b>Questions:</b> Can you walk us through each package? Which package do you prefer, and why? How is each price built? Which Spring Year 2 slots are free? What matters most to you in this deal? What evidence supports the 5% fuel saving?</p>
 <h3>5.5 Challenging behaviours</h3><p>Agreed signal for a team break. Pause before answering. Watch for anchoring, fixed-pie thinking and overconfidence. Respond to pressure with questions and objective criteria.</p>`};
 
-Desk.calcDrawn=(r,touched,dl)=>{S.deal={...S.deal,disc:+r.disc.toFixed(4),...dl,m:+dl.m.toFixed(4),t:+dl.t.toFixed(4)};syncDeal();refresh();const a=$("saveAsk").value.trim(),w=Desk.who(),c=touched&&!Desk.calcSent?checkMove(r.disc,w,a):[];
+
+/* ---------- Terms tracker ---------- */
+const TLAB={give:["We give","give"],get:["They give","get"],both:["Both gain","both"]};
+const TST=[["open","Not yet"],["play","Discussing"],["agreed","Agreed"],["off","Off the table"]];
+const tGet=k=>(S.terms=S.terms||{},S.terms[k]||(S.terms[k]={st:"open",their:"",our:"",note:""}));
+function tItems(){const main=FFT.map(f=>{const t=tGet(f[0]);return{id:"m:"+f[0],kind:"m",k:f[0],name:f[1],st:S.lock[f[0]]?"agreed":t.st,t,f}});
+ const ex=S.vars.map((v,i)=>({id:"v:"+i,kind:"v",i,name:v.n,st:v.s,v}));return main.concat(ex)}
+function tRow(it){const st=it.st,opts=TST.filter(x=>!(st==="open"&&x[0]==="open")).map(x=>`<button type="button" data-ts="${x[0]}" aria-pressed="${st===x[0]}">${x[1]}</button>`).join("");
+ let type,fields="";
+ if(it.kind==="m"){type=`<span class="ffTag ff-${it.f[2]}">${FFL[it.f[2]]} for us</span>`+(S.ff[it.k]?` <span class="ffTag ff-fixed">They say fixed</span>`:"");
+  if(st!=="open")fields=`<div class="tF"><label>Their position<input data-tf="their" value="${esc(it.t.their)}" placeholder="Our estimate: ${esc(it.f[5])}"></label><label>Our position<input data-tf="our" value="${esc(it.t.our)}" placeholder="${esc(it.f[3])}"></label><label class="wide">What was said, so we don't ask again<input data-tf="note" value="${esc(it.t.note)}"></label></div>`+(st==="agreed"?`<p class="tHint">Locked in Enter offer. Choose another status to reopen it.</p>`:"")}
+ else{const L=TLAB[it.v.k]||TLAB.both;type=`<span class="tType ${L[1]}">${L[0]}</span>`;
+  if(st!=="open")fields=`<div class="tF"><label>Their position<input data-tf="their" value="${esc(it.v.their||"")}"></label><label>Our position<input data-tf="our" value="${esc(it.v.our||"")}"></label><label>Value to ShipX, $M<input data-tf="v" inputmode="decimal" value="${esc(it.v.v)}" placeholder="minus if it costs us"></label><label>Unit<select data-tf="u">${UNITS.map(u=>`<option value="${u[0]}" ${u[0]===it.v.u?"selected":""}>${u[1]}</option>`).join("")}</select></label><label class="wide">What was said, so we don't ask again<input data-tf="note" value="${esc(it.v.note||"")}"></label></div>`+(st==="agreed"?`<p class="tHint">${parseFloat(it.v.v)?"Counted in the cost.":"Agreed. Add a value if it changes the cost."}</p>`:`<p class="tHint">${esc(it.v.w)}</p>`)}
+ return `<div class="term st-${st}" data-tk="${it.id}"><div class="termH"><b class="tName">${esc(it.name)}</b>${type}</div><div class="tStat" role="group" aria-label="Status of ${esc(it.name)}">${opts}</div>${fields}</div>`}
+function termsDraw(){if(!$("tPlay"))return;const it=tItems(),g={open:[],play:[],agreed:[],off:[]};it.forEach(x=>(g[x.st]||g.open).push(x));
+ $("tPlay").innerHTML=g.play.map(tRow).join("")||`<p class="muted">Nothing yet. Tap Discussing on a term when it comes up.</p>`;
+ const om=g.open.filter(x=>x.kind==="m"),ov=g.open.filter(x=>x.kind==="v");
+ $("tOpen").innerHTML=(om.length?`<p class="tHint" style="margin:0">Main terms</p>`+om.map(tRow).join(""):"")+(ov.length?`<details class="tGrp" id="tExD"${tExOpen?" open":""}><summary>Extras and sweeteners (${ov.length})</summary><div class="tList">${ov.map(tRow).join("")}</div></details>`:"");
+ const ed=$("tExD");if(ed)ed.addEventListener("toggle",()=>{tExOpen=ed.open});$("tAgreed").innerHTML=g.agreed.map(tRow).join("")||`<p class="muted">Nothing agreed yet.</p>`;$("tOff").innerHTML=g.off.map(tRow).join("")||`<p class="muted">Nothing crossed off yet.</p>`;
+ $("tAgN").textContent=g.agreed.length;$("tOffN").textContent=g.off.length;
+ $("tCounts").innerHTML=`<span style="color:var(--purple)">${g.play.length} discussing</span><span style="color:var(--green)">✓ ${g.agreed.length} agreed</span><span style="color:var(--red)">✕ ${g.off.length} off the table</span><span>${g.open.length} not yet</span>`}
+Desk.termsDraw=termsDraw;let tExOpen=false;
+function tFind(id){const [kind,k]=id.split(":");return kind==="m"?{kind,k,t:tGet(k)}:{kind,i:+k,v:S.vars[+k]}}
+$("paneTerms").addEventListener("click",e=>{const b=e.target.closest("[data-ts]");if(!b)return;const row=b.closest("[data-tk]"),x=tFind(row.dataset.tk),st=b.dataset.ts;
+ if(x.kind==="m"){const was=x.t.st;x.t.st=st;S.lock[x.k]=st==="agreed";if(st==="off")S.ff[x.k]=true;else if(was==="off")S.ff[x.k]=false;drawFF();refresh()}
+ else{x.v.s=st;Desk.varsChanged()}
+ termsDraw()});
+$("paneTerms").addEventListener("input",e=>{const f=e.target.dataset.tf;if(!f)return;const x=tFind(e.target.closest("[data-tk]").dataset.tk);
+ if(x.kind==="m"){x.t[f]=e.target.value;save();return}
+ if(f==="v"){x.v.v=e.target.value;x.v.nv=false;refresh();Desk.calcRun();drawQa();varNums();return}
+ if(f==="u"){x.v.u=e.target.value;refresh();Desk.calcRun();return}
+ x.v[f]=e.target.value;save()});
+$("paneTerms").addEventListener("change",e=>{if(e.target.dataset.tf==="u"){const x=tFind(e.target.closest("[data-tk]").dataset.tk);x.v.u=e.target.value;refresh();Desk.calcRun();drawQa()}});
+$("tAddBtn").onclick=()=>{const n=$("tNew").value.trim();if(!n)return;S.vars.push({n,k:"both",w:"Added in the room.",v:"",u:"sy",s:"play"});$("tNew").value="";Desk.varsChanged();termsDraw()};
+$("tNew").addEventListener("keydown",e=>{if(e.key==="Enter")$("tAddBtn").click()});
+Desk.calcDrawn=(r,touched,dl)=>{S.deal={...S.deal,disc:+r.disc.toFixed(4),...dl,m:+dl.m.toFixed(4),t:+dl.t.toFixed(4)};syncDeal();refresh();const a=$("saveAsk").value.trim(),w=Desk.who(),c=touched&&!Desk.calcSent&&w?checkMove(r.disc,w,a):[];
  const pl=!Desk.calcSent&&(Desk.planList||[]).length?`<div class="gn warn">! Not updated yet: ${esc(Desk.planList.join(", "))}. Change it, or send if it stands.</div>`:"";
  $("calcChecks").innerHTML=pl+(c.length?`<p style="margin:0;font-weight:700;font-size:.88rem">${w==="us"?"If we offered this:":"What their offer means:"}</p>`+c.map(x=>`<div class="gn ${x[0]}">${esc(x[1])}</div>`).join(""):"")};
 Desk.boardShow=()=>{requestAnimationFrame(()=>{drawZopa();drawChart()})};
@@ -1747,8 +2351,10 @@ Desk.boardApply=start=>{if(start){S.deal={...S.deal,disc:T.disc,hull:T.hull,tech
 Desk.boardOffers=()=>S.log.length;
 $("saveAsk").addEventListener("input",()=>Desk.calcRun());
 $("paneCalc").addEventListener("change",e=>{const k=e.target.dataset.ffc;if(!k)return;S.ff[k]=e.target.checked;drawFF();refresh()});
-$("paneCalc").addEventListener("change",e=>{const k=e.target.dataset.lockc;if(!k)return;S.lock[k]=e.target.checked;drawTiles();refresh()});
+$("paneCalc").addEventListener("change",e=>{const k=e.target.dataset.lockc;if(!k)return;S.lock[k]=e.target.checked;{const t=tGet(k);if(e.target.checked)t.st="agreed";else if(t.st==="agreed")t.st="play"}drawTiles();refresh()});
 $("ffB").addEventListener("change",e=>{const k=e.target.dataset.ff;if(!k)return;S.ff[k]=e.target.checked;drawFF();refresh()});
+$("moreHost").append($("stats"),$("rules"));
+$("bSheetD").addEventListener("toggle",()=>{if($("bSheetD").open)$("bSheet").innerHTML=$("sheet").innerHTML});
 drawFF();
 ["dDisc","dHull","dTech","dShips","dMaint","dTrain","dDel"].forEach(i=>$(i).disabled=true);
 syncDeal();drawLadder();drawVars();refresh();clock();show("move");setInterval(clock,15000);Desk.calcRun();drawQa();
@@ -1799,10 +2405,13 @@ $("tApply").onclick=()=>{let bad=null;ALL.forEach(r=>{const el=$("tf-"+r[0]);if(
  if(bad){$("tMsg").textContent="Enter a figure for: "+bad;return}
  Desk.saveTeam();const start=!Desk.boardOffers();Desk.calcApply(start);Desk.boardApply(start);
  $("tMsg").textContent=start?"✓ Both tabs updated.":"✓ Limits updated in both tabs. Offers are recorded, so the live deal stays as it is."};
-const PANES={calc:["paneCalc","mCalc"],board:["paneBoard","mBoard"],team:["paneTeam","mTeam"],help:["paneHelp","mHelp"],d1:["paneD1","mD1"]};
-Desk.pane=p=>{if(document.body.classList.contains("safe"))p="board";Object.keys(PANES).forEach(k=>{$(PANES[k][0]).hidden=k!==p;$(PANES[k][1]).setAttribute("aria-selected",k===p)});
+const PANES={quick:["paneQuick","mQuick"],terms:["paneTerms","mTerms"],calc:["paneCalc","mCalc"],board:["paneBoard","mBoard"],team:["paneTeam","mTeam"],help:["paneHelp","mHelp"],d1:["paneD1","mD1"]};
+Desk.pane=p=>{if(document.body.classList.contains("safe"))p="board";if(p==="quick"&&Desk.quickSync)Desk.quickSync();if(p==="terms"&&Desk.termsDraw)Desk.termsDraw();Object.keys(PANES).forEach(k=>{$(PANES[k][0]).hidden=k!==p;$(PANES[k][1]).setAttribute("aria-selected",k===p)});
  if(p==="board")Desk.boardShow();if(p==="d1")Desk.d1Render();try{localStorage.setItem("shipxDeskPane",p)}catch(e){}scrollTo(0,0)};
-document.querySelectorAll(".mtab").forEach(b=>b.onclick=()=>Desk.pane(b.dataset.p));
+document.querySelectorAll(".mtab[data-p]").forEach(b=>b.onclick=()=>Desk.pane(b.dataset.p));
+const advSet=Desk.advSet=on=>{document.body.classList.toggle("adv",on);$("advBtn").setAttribute("aria-pressed",on);$("advBtn").textContent=on?"Fewer tools":"More tools";try{localStorage.setItem("shipxDeskAdv",on?"1":"")}catch(e){}};
+$("advBtn").onclick=()=>{const on=!document.body.classList.contains("adv");advSet(on);if(!on&&["calc","team","d1"].some(k=>!$(PANES[k][0]).hidden))Desk.pane("quick")};
+let advOn=false;try{advOn=localStorage.getItem("shipxDeskAdv")==="1"}catch(e){}advSet(advOn);
 const HC=["Agree each figure in Team numbers, tick it, then press Update both tabs.","Agree who speaks. The Analyst runs the Desk.","On the device you will use, run one practice offer from each side.","Practise one translation, one extra and one They say fixed tick.","Reset: Board, Practice and sources, Clear all offers and reset both tabs.","Check the device is charged and online."];
 let hd={};try{hd=JSON.parse(localStorage.getItem("shipxDeskHelp")||"{}")}catch(e){}
 $("hChecks").innerHTML=HC.map((t,i)=>`<label><input type="checkbox" id="hc${i}" ${hd[i]?"checked":""}><span>${t}</span></label>`).join("");
@@ -1816,9 +2425,10 @@ Object.keys(PH).forEach(k=>{const e=$(k);if(e)e.placeholder=PH[k]});
 [1,2,3,4].forEach(i=>{$("b"+i+"s").placeholder=["e.g. 6","e.g. 4","",""][i-1];$("b"+i+"d").placeholder=["e.g. 30","e.g. 35.25","",""][i-1]});
 $("d1Copy").onclick=async()=>{Desk.d1Render();const t=$("d1Body").innerText,m=$("d1Msg");try{await navigator.clipboard.writeText(t);m.textContent="✓ Copied. Paste it into Word or Google Docs."}catch(e){const r=document.createRange();r.selectNodeContents($("d1Body"));const s=getSelection();s.removeAllRanges();s.addRange(r);m.textContent="Copying is blocked here, so the draft is selected. Press Ctrl+C or Cmd+C."}};
 Desk.teamForm();
-let start="board";try{start=localStorage.getItem("shipxDeskPane")||"board"}catch(e){}
+let start="quick";try{start=localStorage.getItem("shipxDeskPane")||"quick"}catch(e){}if(!advOn&&["calc","team","d1"].includes(start))start="quick";
 Desk.pane(start);
 })();
 </script>
+
 
 </body></html>
